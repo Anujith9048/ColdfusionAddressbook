@@ -43,13 +43,11 @@ function validate() {
         document.getElementById("usernameError").innerText = "";
         document.getElementById("usernameError").classList.remove("is-invalid");
     }
-
     if (password === "") {
         document.getElementById("pass1Error").innerText = "Enter a password!";
         document.getElementById("pass1Error").classList.add("text-danger");
         document.getElementById("password").classList.add("is-invalid");
         event.preventDefault();
-
     } else {
         document.getElementById("pass1Error").innerText = "";
         document.getElementById("password").classList.remove("is-invalid");

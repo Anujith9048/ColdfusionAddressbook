@@ -11,6 +11,7 @@
     <script src="../script/validate.js"></script>
 </head>
 
+
 <body class="body">
     <nav class="navbar navbar-light address-nav fixed-top shadow">
         <div class="container-fluid mx-4">
