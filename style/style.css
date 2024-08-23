@@ -1,0 +1,36 @@
+
+.body{
+    background-color: #d8e5f1;
+    margin-top: 100px;
+    height: 100vh;
+}
+.bg-address ,.address-nav{
+    background-color: #337ab7;
+}
+.color-address{
+    color: #337ab7 !important;
+}
+.address-btn{
+    border: 1px solid #337ab7 !important;
+
+    &:hover{
+        background-color: hsla(208, 56%, 46%);
+        color: white !important;
+    }
+}
+.nav-butns{
+    cursor: pointer;
+}
+.nav-butns:hover{
+    background-color: hsl(208, 56%, 43%);
+    
+}
+.form-signup{
+    border-radius: 0px 20px 20px 0px;
+}
+.form-logo{
+    border-radius: 20px 0px  0px 20px;
+}
+label{
+    color: hsl(206, 66%, 24%);
+}   
