@@ -1,3 +1,8 @@
+<cfif session.isLog>
+    <cflocation url="homePage.cfm">
+
+    <cfelse>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,9 +14,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="../script/jquery-ui.min.js"></script>
     <script src="../script/validate.js"></script>
+    <script src="../script/jquery.js"></script>
 </head>
-
-
 <body class="body">
     <nav class="navbar navbar-light address-nav fixed-top shadow">
         <div class="container-fluid mx-4">
@@ -20,12 +24,12 @@
             <div class="d-flex gap-4 ">
                 <div class="d-flex align-items-center gap-1 nav-butns btn">
                     <img width="20" height="20" src="../images/signup.png" alt="">
-                    <a href="##" class="text-decoration-none text-white py-2"> Sign Up</a>
+                    <a href="signup.cfm" class="text-decoration-none text-white py-2"> Sign Up</a>
                 </div>
 
                 <div class="d-flex align-items-center gap-1 nav-butns btn">
                     <img width="20" height="20" src="../images/login.png" alt="">
-                    <a href="##" class="text-decoration-none text-white py-2"> Login</a>
+                    <a href="login.cfm" class="text-decoration-none text-white py-2"> Login</a>
                 </div>
             </div>
         </div>
@@ -66,14 +70,14 @@
                     </div>
                     <div class="registr-btn mt-4 text-center">
                         <button class="w-100 btn color-address address-btn rounded-pill" id="register" onclick="validate()">Register</button>
-                        <a href="##" class="text-decoration-none text-dark text-center">Already have an account?<span class="color-address">  Login</span></a>
+                        <a href="login.cfm" class="text-decoration-none text-dark text-center">Already have an account?<span class="color-address">  Login</span></a>
                     </div>
                 </div>
                 <p class="text-center" id="result"></p>
-
             </form>
         </div>
     </div>
 </body>
 
 </html>
+</cfif>

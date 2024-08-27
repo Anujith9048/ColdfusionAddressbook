@@ -165,15 +165,6 @@
           <cfreturn getDatas>
         </cffunction>
 
-    <!--- Function to GET LIST --->
-    <cffunction name="getList" access="public" returntype="any">
-      <cfargument name="value" type="string">
-      <cfquery name="qgetData" datasource="myDatabase">
-      SELECT * FROM pageData WHERE pageId = <cfqueryparam value="#arguments.value#" cfsqltype="cf_sql_varchar">
-      </cfquery>
-      <cfreturn qgetData>
-    </cffunction>
-
    <!--- Function to deleteRow --->
       <cffunction name="deleteRow" access="remote" returnformat="plain">
         <cfargument name="pageId" type="string">

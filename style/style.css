@@ -4,11 +4,17 @@
     margin-top: 100px;
     height: 100vh;
 }
+.create-bg{
+    background-color: #e6ecf1;
+}
 .bg-address ,.address-nav{
     background-color: #337ab7;
 }
 .color-address{
     color: #337ab7 !important;
+}
+.contact-title{
+    border-bottom: 1px solid #337ab7;
 }
 .address-btn{
     border: 1px solid #337ab7 !important;
@@ -17,6 +23,9 @@
         background-color: hsla(208, 56%, 46%);
         color: white !important;
     }
+}
+.create-title{
+    border: 1px solid #337ab7 !important;
 }
 .nav-butns{
     cursor: pointer;
@@ -34,3 +43,6 @@
 label{
     color: hsl(206, 66%, 24%);
 }   
+.content-box{
+    margin-top: 100px;
+}
