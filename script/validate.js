@@ -125,7 +125,10 @@ function validateLogin(){
         document.getElementById("passwordError").innerText ="";
     }
 }
-
+document.getElementById('phone').addEventListener('input', function (e) {
+    alert("hey")
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
 function modalValidate(){
     var title = document.getElementById("title").value;
     var fname = document.getElementById("fname").value;
@@ -210,15 +213,22 @@ function modalValidate(){
         document.getElementById("street").classList.remove("is-invalid");
         document.getElementById("errorStreet").innerText = "";
     }
-    if (phone === ""){
+    if (phone === "") {
         document.getElementById("phone").classList.add("is-invalid");
         document.getElementById("errorPhone").innerText = "Enter phone number";
         event.preventDefault();
+    } else {
+        var phoneNum = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        if (!phone.match(phoneNum)) { 
+            document.getElementById("phone").classList.add("is-invalid");
+            document.getElementById("errorPhone").innerText = "Enter a valid phone number";
+            event.preventDefault();
+        } else {
+            document.getElementById("phone").classList.remove("is-invalid");
+            document.getElementById("errorPhone").innerText = "";
+        }
     }
-    else{
-        document.getElementById("phone").classList.remove("is-invalid");
-        document.getElementById("errorPhone").innerText = "";
-    }
+    
     if (email === ""){
         document.getElementById("email").classList.add("is-invalid");
         document.getElementById("errorEmail").innerText = "Enter email";
@@ -247,6 +257,137 @@ function modalValidate(){
     else{
         document.getElementById("errorEmail").innerText=""; 
         document.getElementById("email").classList.remove("is-invalid");
+    }
+}
+
+function modalValidateEdited(){
+    var title = document.getElementById("titleEdited").value;
+    var fname = document.getElementById("fnameEdited").value;
+    var lname = document.getElementById("lnameEdited").value;
+    var gender = document.getElementById("genderEdited").value;
+    var dob = document.getElementById("dobEdited").value;
+    var image = document.getElementById("imageEdited").value;
+    var address = document.getElementById("addressEdited").value;
+    var street = document.getElementById("streetEdited").value;
+    var phone = document.getElementById("phoneEdited").value;
+    var email = document.getElementById("emailEdited").value;
+    var pincode = document.getElementById("pincodeEdited").value;
+    if (title === ""){
+        document.getElementById("titleEdited").classList.add("is-invalid");
+        document.getElementById("errorTitleEdited").innerText = "Select your title";
+        event.preventDefault();
+    }
+    else{
+        document.getElementById("titleEdited").classList.remove("is-invalid");
+        document.getElementById("errorTitleEdited").innerText = "";
+    }
+    if (fname === ""){
+        document.getElementById("fnameEdited").classList.add("is-invalid");
+        document.getElementById("errorFnameEdited").innerText = "Enter First name";
+        event.preventDefault();
+    }
+    else{
+        document.getElementById("fnameEdited").classList.remove("is-invalid");
+        document.getElementById("errorFnameEdited").innerText = "";
+    }
+    if (lname === ""){
+        document.getElementById("lnameEdited").classList.add("is-invalid");
+        document.getElementById("errorLnameEdited").innerText = "Enter Last name";
+        event.preventDefault();
+    }
+    else{
+        document.getElementById("lnameEdited").classList.remove("is-invalid");
+        document.getElementById("errorLnameEdited").innerText = "";
+    }
+    if (gender === ""){
+        document.getElementById("genderEdited").classList.add("is-invalid");
+        document.getElementById("errorGenderEdited").innerText = "Select gender";
+        event.preventDefault();
+    }
+    else{
+        document.getElementById("genderEdited").classList.remove("is-invalid");
+        document.getElementById("errorGenderEdited").innerText = "";
+    }
+    if (dob === ""){
+        document.getElementById("dobEdited").classList.add("is-invalid");
+        document.getElementById("errorDobEdited").innerText = "Select date of birth";
+        event.preventDefault();
+    }
+    else{
+        document.getElementById("dobEdited").classList.remove("is-invalid");
+        document.getElementById("errorDobEdited").innerText = "";
+    }
+    if (image === ""){
+        document.getElementById("imageEdited").classList.add("is-invalid");
+        document.getElementById("errorImageEdited").innerText = "Upload an image";
+        event.preventDefault();
+    }
+    else{
+        document.getElementById("imageEdited").classList.remove("is-invalid");
+        document.getElementById("errorImageEdited").innerText = "";
+    }
+    if (address === ""){
+        document.getElementById("addressEdited").classList.add("is-invalid");
+        document.getElementById("errorAddressEdited").innerText = "Enter address";
+        event.preventDefault();
+    }
+    else{
+        document.getElementById("addressEdited").classList.remove("is-invalid");
+        document.getElementById("errorAddressEdited").innerText = "";
+    }
+    if (street === ""){
+        document.getElementById("streetEdited").classList.add("is-invalid");
+        document.getElementById("errorStreetEdited").innerText = "Enter street";
+        event.preventDefault();
+    }
+    else{
+        document.getElementById("streetEdited").classList.remove("is-invalid");
+        document.getElementById("errorStreetEdited").innerText = "";
+    }
+    if (phone === "") {
+        document.getElementById("phoneEdited").classList.add("is-invalid");
+        document.getElementById("errorPhoneEdited").innerText = "Enter phone number";
+        event.preventDefault();
+    } else {
+        var phoneNum = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        if (!phone.match(phoneNum)) { 
+            document.getElementById("phoneEdited").classList.add("is-invalid");
+            document.getElementById("errorPhoneEdited").innerText = "Enter a valid phone number";
+            event.preventDefault();
+        } else {
+            document.getElementById("phoneEdited").classList.remove("is-invalid");
+            document.getElementById("errorPhoneEdited").innerText = "";
+        }
+    }
+    
+    if (email === ""){
+        document.getElementById("emailEdited").classList.add("is-invalid");
+        document.getElementById("errorEmailEdited").innerText = "Enter email";
+        event.preventDefault();
+    }
+    else{
+        document.getElementById("emailEdited").classList.remove("is-invalid");
+        document.getElementById("errorEmailEdited").innerText = "";
+    }
+    if (pincode === ""){
+        document.getElementById("pincodeEdited").classList.add("is-invalid");
+        document.getElementById("errorPincodeEdited").innerText = "Enter pincode";
+        event.preventDefault();
+    }
+    else{
+        document.getElementById("pincodeEdited").classList.remove("is-invalid");
+        document.getElementById("errorPincodeEdited").innerText = "";
+    }
+    var emailValidate= /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!emailValidate.test(email)){
+        document.getElementById("errorEmailEdited").classList.add("text-danger");
+        document.getElementById("emailEdited").classList.add("is-invalid");
+        document.getElementById("errorEmailEdited").innerText="Enter a valid email address!!";
+        event.preventDefault();
+    }
+    else{
+        document.getElementById("errorEmailEdited").innerText=""; 
+        document.getElementById("emailEdited").classList.remove("is-invalid");
     }
 
 

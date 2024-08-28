@@ -46,3 +46,19 @@ label{
 .content-box{
     margin-top: 100px;
 }
+.address-image{
+    width: 37px;
+    height: 37px !important;
+}
+.profile-image{
+    opacity: 0;
+    width: 70px !important;
+    height: 70px !important;
+}
+.image-box{
+    width: 94px !important;
+    height: 90px !important;
+    background-image: url(../images/addImage.png);
+    background-position: center;
+    background-size: cover;
+}

@@ -125,5 +125,13 @@ $("#addAddress").click(function(event){
         }
     });
 });
+
+
+$("#closeModal").click(function(event){
+    location.reload(true);
+});
+$("#closeModalEdited").click(function(event){
+    location.reload(true);
+});
 });
 

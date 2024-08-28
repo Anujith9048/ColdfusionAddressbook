@@ -1,6 +1,6 @@
 <cfcomponent>
     <cffunction name="signupUser" access="remote" returnformat="json">
-        <cfargument name="name" type="string" >
+        <cfargument name="name" type="string">
         <cfargument name="email" type="string" >
         <cfargument name="userName" type="string" >
         <cfargument name="password" type="string" >
@@ -41,6 +41,8 @@
         </cfquery>
         <cfif check.email EQ arguments.email AND check.password EQ local.encryptedPass>
             <cfset session.isLog = true>
+            <cfset session.username = check.username>
+            <cfset session.userId = check.userId>
             <cfreturn {"result":true}>
 
         <cfelseif check.email EQ arguments.email AND check.password NEQ local.encryptedPass>       
@@ -88,7 +90,7 @@
         <cfset local.uploadedFile = cffile.serverFile>
     
     <cfquery name="addDatas" datasource="myDatabase">
-    INSERT INTO addressbookRegister (Title , Fname , Lname , Gender , DateOfBirth , Image ,Address , Street , Phone , Email ,Pincode)
+    INSERT INTO savedAddress (Title , Fname , Lname , Gender , DateOfBirth , Image ,Address , Street , Phone , Email ,Pincode)
     VALUES(
       <cfqueryparam value="#arguments.title#" cfsqltype="cf_sql_varchar">,
       <cfqueryparam value="#arguments.fname#" cfsqltype="cf_sql_varchar">,
@@ -98,9 +100,9 @@
       <cfqueryparam value="#uploadedFile#" cfsqltype="cf_sql_varchar">,
       <cfqueryparam value="#arguments.address#" cfsqltype="cf_sql_varchar">,
       <cfqueryparam value="#arguments.street#" cfsqltype="cf_sql_varchar">,
-      <cfqueryparam value="#arguments.phone#" cfsqltype="CF_SQL_INTEGER">,
+      <cfqueryparam value="#arguments.phone#" cfsqltype="cf_sql_varchar">,
       <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">,
-      <cfqueryparam value="#arguments.pincode#" cfsqltype="CF_SQL_INTEGER">
+      <cfqueryparam value="#arguments.pincode#" cfsqltype="cf_sql_varchar">
     )
     </cfquery>
     <cfreturn {"result":true}>
