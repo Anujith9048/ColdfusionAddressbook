@@ -41,12 +41,13 @@
         </div>
         <div class="col-7 bg-white  px-3 pb-4 form-signup shadow-lg">
             <h3 class="text-center mt-2 color-address">SIGN UP</h3>
-            <form action="" method="post" class="">
+            <form action="signup.cfm" method="post" class="" enctype="multipart/form-data">
                 <div class="gap-4">
                     <div class="image-box mt-3 mx-auto">
-                        <input type="file" id="profileImage" class="mx-auto rounded-circle profile-image form-control border-start-0 border-end-0 border-top-0 border-bottom-1" placeholder="Full Name">
-                        <label for="">Profile photo</label>
-                        <p id="nameErrorProfile"></p>
+                        <input type="hidden" name="defaultImage" id="defaultImage" value="../images/default_user.png">
+
+                        <input type="file" name="profileImage" id="profileImage" class="mx-auto rounded-circle profile-image form-control border-start-0 border-end-0 border-top-0 border-bottom-1">
+                        <label class="" id="nameErrorProfile" for="">Profile photo</label>
                     </div>
                     <div class="name-box mt-3 form-floating">
                         <input type="text" id="name" class="form-control border-start-0 border-end-0 border-top-0 border-bottom-1" placeholder="Full Name">
@@ -80,6 +81,8 @@
                 </div>
                 <p class="text-center" id="result"></p>
             </form>
+
+            
         </div>
     </div>
 </body>

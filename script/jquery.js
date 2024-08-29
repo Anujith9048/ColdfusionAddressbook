@@ -1,40 +1,43 @@
 $(document).ready(function(){
 
 //SIGNUP//
-    $("#register").click(function(){
-        event.preventDefault();
-        $.ajax({
-            url: '../components/controller.cfc',
-            method: 'post',
-            data: {
-                method: "signupUser",
-                name: $("#name").val(),
-                email: $("#email").val(),
-                userName: $("#userName").val(),
-                password: $("#password").val()
-            },
-            dataType: "json",
-            success: function (response) {
-                if (response.result) {
-                    $("#result").text("Your account has been created please login.");
-                    $("#result").removeClass("text-danger");
-                    $("#result").addClass("text-success");
-                }
-                else{
-                    $("#result").text("Email already exist!!");
-                    $("#result").removeClass("text-success");
-                    $("#result").addClass("text-danger");
-                }
+$("#register").click(function(event){
+    event.preventDefault();
 
-            },
-            error: function (xhr, status, error) {
-                console.log("An error occurred : " + error);
+    var datas = new FormData();
+    datas.append("profileImage", $("#profileImage")[0].files[0]);
+    datas.append("name", $("#name").val());
+    datas.append("email", $("#email").val());
+    datas.append("userName", $("#userName").val());
+    datas.append("password", $("#password").val());
+    $.ajax({
+        url: '../components/controller.cfc?method=signupUser',
+        method: 'post',
+        data: datas,
+        dataType: "json",
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            if (response.result) {
+                $("#result").text("Your account has been created please login.");
+                $("#result").removeClass("text-danger");
+                $("#result").addClass("text-success");
             }
-        });
+            else {
+                $("#result").text("Email already exists!!");
+                $("#result").removeClass("text-success");
+                $("#result").addClass("text-danger");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log("An error occurred: " + error);
+        }
     });
+});
+
 
 //LOGIN//
-    $("#login").click(function(){
+    $("#login").click(function(event){
         event.preventDefault();
         $.ajax({
             url: '../components/controller.cfc',
@@ -89,11 +92,64 @@ $(document).ready(function(){
         });
     });
 
+//DELETE-ADDRESS//
+        $(".Address").click(function(){
+            event.preventDefault();
+            $.ajax({
+                url: '../components/controller.cfc',
+                method: 'post',
+                data: {
+                    method: "selectedAddress",
+                    id:$(this).attr("data-id")
+                },
+                dataType: "json",
+                error: function (xhr, status, error) {
+                    console.log("An error occurred : " + error);
+                }
+            });
+        });
+        $("#deleteContact").click(function(){
+            event.preventDefault();
+            $.ajax({
+                url: '../components/controller.cfc',
+                method: 'post',
+                data: {
+                    method: "deleteAddress"
+                },
+                dataType: "json",
+                success: function (response) {
+                    if(response.result){
+                        location.reload(true);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("An error occurred : " + error);
+                }
+            });
+        });
+
+
+  //VIEW ADDRESS//      
+        $(".viewAddress").click(function(){
+            event.preventDefault();
+            $.ajax({
+                url: '../components/controller.cfc',
+                method: 'post',
+                data: {
+                    method: "viewAddress",
+                    id:$(this).attr("data-id")
+                },
+                dataType: "json",
+                error: function (xhr, status, error) {
+                    console.log("An error occurred : " + error);
+                }
+            });
+        });
+
 //ADD ADDRESS//
 $("#addAddress").click(function(event){
     event.preventDefault();
 
-    // Create a FormData object
     var formData = new FormData();
     formData.append("method", "addAddress");
     formData.append("title", $("#title").val());
@@ -101,7 +157,7 @@ $("#addAddress").click(function(event){
     formData.append("lname", $("#lname").val());
     formData.append("gender", $("#gender").val());
     formData.append("dob", $("#dob").val());
-    formData.append("image", $("#image")[0].files[0]);  // Use files[0] to get the actual file
+    formData.append("image", $("#image")[0].files[0]);
     formData.append("address", $("#address").val());
     formData.append("street", $("#street").val());
     formData.append("phone", $("#phone").val());
