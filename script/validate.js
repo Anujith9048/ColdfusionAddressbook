@@ -148,6 +148,18 @@ function modalValidate(event){
     var phone = document.getElementById("phone").value;
     var email = document.getElementById("email").value;
     var pincode = document.getElementById("pincode").value;
+
+   
+    if (image === ""){
+        document.getElementById("image").classList.add("is-invalid");
+        document.getElementById("errorImage").innerText = "Upload an image";
+        isValid = false;
+    }
+    else{
+        document.getElementById("image").classList.remove("is-invalid");
+        document.getElementById("errorImage").innerText = "";
+        isValid = true;
+    }
     if (title === ""){
         document.getElementById("title").classList.add("is-invalid");
         document.getElementById("errorTitle").innerText = "Select your title";
@@ -196,16 +208,6 @@ function modalValidate(event){
     else{
         document.getElementById("dob").classList.remove("is-invalid");
         document.getElementById("errorDob").innerText = "";
-        isValid = true;
-    }
-    if (image === ""){
-        document.getElementById("image").classList.add("is-invalid");
-        document.getElementById("errorImage").innerText = "Upload an image";
-        isValid = false;
-    }
-    else{
-        document.getElementById("image").classList.remove("is-invalid");
-        document.getElementById("errorImage").innerText = "";
         isValid = true;
     }
     if (address === ""){

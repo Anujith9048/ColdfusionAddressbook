@@ -92,6 +92,34 @@ $("#register").click(function(event){
         });
     });
 
+    //EDIT ADDRESS//
+        $(".editAddress").click(function(){
+            event.preventDefault();
+            $.ajax({
+                url: '../components/controller.cfc?method=selectedAddress',
+                method: 'post',
+                data: {
+                    id:$(this).attr("data-id")
+                },
+                dataType: "json",
+                success: function (response) {
+                    var rowData = response.DATA[0];
+                   $("#fname").attr("value", `${rowData[2]}`);
+                   $("#lname").attr("value", `${rowData[3]}`);
+                   $("#dob").attr("value", `${rowData[5]}`);
+                   $("#address").attr("value", `${rowData[7]}`);
+                   $("#street").attr("value", `${rowData[8]}`);
+                   $("#phone").attr("value", `${rowData[9]}`);
+                   $("#email").attr("value", `${rowData[10]}`);
+                   $("#pincode").attr("value", `${rowData[11]}`);
+    
+                },
+                error: function (xhr, status, error) {
+                    console.log("An error occurred : " + error);
+                }
+            });
+        });
+
 //DELETE-ADDRESS//
         $(".Address").click(function(){
             event.preventDefault();
@@ -128,23 +156,60 @@ $("#register").click(function(event){
             });
         });
 
+//VIEW-ADDRESS//
+$(".viewAddress").click(function(event) {
+    event.preventDefault();
+    var button = $(this);
+    $.ajax({
+        url: '../components/controller.cfc?method=selectedAddress',
+        method: 'post',
+        data: {
+            id: button.attr("data-id"),
+            ts: new Date().getTime()
+        },
+        dataType: "json",
+        success: function(response) {
+            if (response.DATA && response.DATA.length > 0) {
+                var rowData = response.DATA[0];
+                console.log(rowData[5]); 
+                
+                let table = '<table class="table table-striped">';
+                table += '<tr><th class="color-address">Name</th>';
+                table +=`<td class="color-address">${rowData[2]} ${rowData[3]}</td></tr>`;
+                table += '<tr><th class="color-address">Gender</th>';
+                table +=`<td class="color-address">${rowData[4]}</td></tr>`;
+                table += '<tr><th class="color-address">Date of Birth</th>';
+                table +=`<td class="color-address">${rowData[5]}</td></tr>`;
+                table += '<tr><th class="color-address">Address</th>';
+                table +=`<td class="color-address">${rowData[7]}</td></tr>`;
+                table += '<tr><th class="color-address">Phone</th>';
+                table +=`<td class="color-address">${rowData[9]}</td></tr>`;
+                table += '<tr><th class="color-address">Email</th>';
+                table +=`<td class="color-address">${rowData[10]}</td></tr>`;
+                table += '<tr><th class="color-address">Pincode</th>';
+                table +=`<td class="color-address">${rowData[11]}</td></tr>`;
+                table += '</table>';
 
-  //VIEW ADDRESS//      
-        $(".viewAddress").click(function(){
-            event.preventDefault();
-            $.ajax({
-                url: '../components/controller.cfc',
-                method: 'post',
-                data: {
-                    method: "viewAddress",
-                    id:$(this).attr("data-id")
-                },
-                dataType: "json",
-                error: function (xhr, status, error) {
-                    console.log("An error occurred : " + error);
-                }
-            });
-        });
+                let image = '<img class="img-fluid shadow rounded-3" width="150" src="../assets/';
+                image += `${rowData[6]}`;
+                image += '" alt="">';
+
+                $("#address-view").html(table);
+                $("#image_view").html(image);
+
+                $("#viewAddress").modal("show");
+            } else {
+                console.log("No data available");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log("An error occurred: " + error);
+        }
+    });
+});
+
+        
+
 
 //ADD ADDRESS//
 $("#addAddress").click(function(event){
@@ -173,7 +238,14 @@ $("#addAddress").click(function(event){
         contentType: false,  
         success: function (response) {
             if(response.result){
+                $("#resultAddress").removeClass("text-danger");
+                $("#resultAddress").addClass("text-success");
                 $("#resultAddress").text("Address added successfully");
+            }
+            else{
+                $("#resultAddress").removeClass("text-success");
+                $("#resultAddress").addClass("text-danger");
+                $("#resultAddress").text("Email already exist");
             }
         },
         error: function (xhr, status, error) {
@@ -183,7 +255,7 @@ $("#addAddress").click(function(event){
 });
 
 
-$("#closeModal").click(function(event){
+$(".closeModal").click(function(event){
     location.reload(true);
 });
 $("#closeModalEdited").click(function(event){

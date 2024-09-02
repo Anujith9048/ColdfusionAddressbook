@@ -69,7 +69,7 @@
                                     <td class="align-content-center">#address.getEmail()#</td>
                                     <td class="align-content-center">#address.getPhone()#</td>
                                     <td class="align-content-center">
-                                        <button class="btn address-btn rounded-pill"
+                                        <button class="btn address-btn rounded-pill editAddress"
                                                 id="editAddress"
                                                 data-id="#address.getaddressId()#"
                                                 data-bs-toggle="modal"
@@ -81,8 +81,7 @@
                                         data-id="#address.getaddressId()#">Delete</button>
                                     </td>
                                     <td class="align-content-center">
-                                        <button class="btn address-btn rounded-pill Address viewAddress" data-bs-toggle="modal"
-                                        data-bs-target="##viewModal" id=""
+                                        <button class="btn address-btn rounded-pill Address viewAddress"
                                         data-id="#address.getaddressId()#">View</button>
                                     </td>
                                 </tr>
@@ -92,7 +91,7 @@
                 </div>
             </div>
 
-<!--CREATE-MODAl-->
+<!--CREATE/EDIT-MODAl-->
             <div class=" shadow-lg modal fade" id="exampleModal" tabindex="-1"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg d-flex gap-0">
@@ -108,8 +107,8 @@
                             <div class="d-flex gap-3">
                                 <div class="title-box">
                                     <label for="" class="color-address form-text fw-bold">Title*</label>
-                                    <select class="form-select" name="" id="title">
-                                        <option value=""></option>
+                                    <select class="form-select" name="" id="title" >
+                                        <option value="" id="titleValue"></option>
                                         <option value="Mr.">Mr.</option>
                                         <option value="Mrs.">Mrs.</option>
                                         <option value="Ms.">Ms.</option>
@@ -149,7 +148,7 @@
                                 <div class="dob-box">
                                     <label for="" class="color-address form-text fw-bold">Date of
                                         birth*</label>
-                                    <input type="date" class="form-control" id="dob">
+                                    <input type="date" class="form-control" id="dob" >
                                     <p id="errorDob" class="text-danger"></p>
                                 </div>
 
@@ -214,7 +213,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="closeModal" class="btn btn-secondary"
+                        <button type="button" id="" class="btn btn-secondary closeModal"
                             data-bs-dismiss="modal">Close</button>
                         <button type="button" id="addAddress" class="btn btn-primary"
                             onclick="modalValidate()">Add contact</button>
@@ -230,74 +229,29 @@
             </div>
         </div>
 <!--VIEW-MODAl-->
-<div class=" shadow-lg modal fade" id="viewModal" tabindex="-1"aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg d-flex gap-0">
-    <div class="modal-content border-0 rounded-0 rounded-start">
-        <div class="modal-header create-bg">
-            <h5 class="modal-title color-address create-title w-100 text-center py-2 rounded-pill"
-                id="exampleModalLabel">Create Contact</h5>
+<div class="shadow-lg modal fade" id="viewAddress" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg d-flex gap-0">
+        <div class="modal-content border-0 rounded-0 rounded-start">
+            <div class="modal-header create-bg">
+                <h5 class="modal-title color-address create-title w-100 text-center py-2 rounded-pill" id="exampleModalLabel">View Contact</h5>
+            </div>
+            <div class="modal-body">
+                <div class="address-view" id="address-view">
+                    <!-- Dynamic table content will be inserted here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="closeModal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
-        <div class="modal-body">
-            <div class="address-view">
-            <cfset criteria = {userId=session.userId}>
-            <cfset savedAddresses = entityLoad("savedAddress", criteria)>
-            <cfloop array="#savedAddresses#" index="address">
-                <cfif address.getaddressId() EQ session.selectId>
-                    
-                    <div class="items-box d-flex gap-5">
-                        <p class="fw-bold fs-5 color-address">Full Name:</p>
-                        <p class="fs-5">#address.getFname()# #address.getLname()#</p>
-                    </div>
-                    
-                    <div class="items-box d-flex gap-5">
-                        <p class="fw-bold fs-5 color-address">Gender:</p>
-                        <p class="fs-5">#address.getGender()#</p>
-                    </div>
-                    
-                    <div class="items-box d-flex gap-5">
-                        <p class="fw-bold fs-5 color-address">Data of Birth:</p>
-                        <p class="fs-5">#address.getDob()#</p>
-                    </div>
-                    
-                    <div class="items-box d-flex gap-5">
-                        <p class="fw-bold fs-5 color-address">Full Address:</p>
-                        <p class="fs-5">#address.getAddress()#</p>
-                    </div>
-                    
-                    <div class="items-box d-flex gap-5">
-                        <p class="fw-bold fs-5 color-address">Phone number:</p>
-                        <p class="fs-5">#address.getPhone()#</p>
-                    </div>
-                    
-                    <div class="items-box d-flex gap-5">
-                        <p class="fw-bold fs-5 color-address">Email Id:</p>
-                        <p class="fs-5">#address.getEmail()#</p>
-                    </div>
-                    
-                    <div class="items-box d-flex gap-5">
-                        <p class="fw-bold fs-5 color-address">Pincode:</p>
-                        <p class="fs-5">#address.getPincode()#</p>
-                    </div>
-                    
-                </cfif>
 
-            </cfloop>
-        </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" id="closeModal" class="btn btn-secondary"
-                data-bs-dismiss="modal">Close</button>
-        </div>
-    </div>
-
-    <div
-        class="col-3 create-bg d-flex align-items-center justify-content-center rounded-end modal-image-box">
-        <div class="image_container p-4 py-auto">
-            <img class="img-fluid shadow  rounded-3" width="150"  src="../assets/#address.getImage()#" alt="">
+        <div class="col-3 create-bg d-flex align-items-center justify-content-center rounded-end modal-image-box">
+            <div class="image_view p-4 py-auto" id="image_view">
+            </div>
         </div>
     </div>
 </div>
-</div>
+
         <!--DELETE-CONFIRM-MODAL-->
             <div id="deleteModal" class="modal fade">
                 <div class="modal-dialog modal-confirm">
@@ -320,8 +274,7 @@
                   </div>
                 </div>
               </div>
-
-
+            </div>
         </body>
         </html>
     </cfoutput>

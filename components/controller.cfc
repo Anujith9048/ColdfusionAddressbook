@@ -40,9 +40,6 @@
         </cfif>
     </cffunction>
     
-    
-
-
     <!--- Function for LOGIN --->
     <cffunction name="login" access="remote" returnformat="json">
         <cfargument name="email" type="string" >
@@ -68,7 +65,7 @@
             <cfreturn {"result":"noAccount"}>
 
         </cfif>
-      </cffunction>
+    </cffunction>
 
 <!--- Function for LOGOUT --->
       <cffunction name="logout" access="remote" returnformat="JSON">
@@ -76,18 +73,25 @@
         <cfreturn {"result":true}>
       </cffunction>
 
-      <!--- Function for selectedAddress --->
-            <cffunction name="selectedAddress" access="remote" returnformat="JSON">
-                <cfargument name="id" type="numeric">
-                <cfset session.selectId = arguments.id>
-            </cffunction>
-            <cffunction name="deleteAddress" access="remote" returnformat="JSON">
-                <cfquery name="deleteData" datasource="myDatabase">
-                DELETE FROM savedAddress 
-                WHERE addressId = #session.selectId#
-                </cfquery>
-                <cfreturn {"result":true}>
-            </cffunction>
+<!--- Function for selectedAddress --->
+    <cffunction name="selectedAddress" access="remote" returnformat="JSON">
+        <cfargument name="id" type="numeric">
+            <cfset session.selectId = arguments.id>
+            <cfquery name="selectAddress" datasource="myDatabase">
+                SELECT * FROM savedAddress
+                WHERE addressId = <cfqueryparam value="#arguments.id#" cfsqltype="cf_sql_integer">
+            </cfquery>
+            <cfreturn selectAddress>
+    </cffunction>
+
+<!--- Function for deleteAddress --->
+    <cffunction name="deleteAddress" access="remote" returnformat="JSON">
+        <cfquery name="deleteData" datasource="myDatabase">
+        DELETE FROM savedAddress 
+        WHERE addressId = #session.selectId#
+        </cfquery>
+        <cfreturn {"result":true}>
+    </cffunction>
 
 <!--- Function for ADD ADDRESS --->
 <cffunction name="addAddress" access="remote" returnformat="JSON">
@@ -103,7 +107,15 @@
     <cfargument name="email" type="string">
     <cfargument name="pincode" type="string">
     
-    <cfset local.destinationPath = expandPath('../assets/')>
+    <cfquery name="checkEmail" datasource="myDatabase">
+        SELECT Email FROM savedAddress
+        WHERE Email = <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
+    </cfquery>
+    <cfif checkEmail.Email EQ arguments.email>
+        <cfreturn {"result":false}>
+
+        <cfelse>
+            <cfset local.destinationPath = expandPath('../assets/')>
     <cfset local.result.success = false>
 
 
@@ -136,6 +148,7 @@
     )
     </cfquery>
     <cfreturn {"result":true}>
+    </cfif>
   </cffunction>
   
 </cfcomponent>
