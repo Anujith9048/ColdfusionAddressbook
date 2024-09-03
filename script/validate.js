@@ -29,12 +29,13 @@ function validate() {
         document.getElementById("emailError").classList.add("text-danger");
         document.getElementById("email").classList.add("is-invalid");
         event.preventDefault();
-    } else {
+    } 
+    else {
         var emailValidate= /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (!emailValidate.test(email)){
             document.getElementById("emailError").classList.add("text-danger");
             document.getElementById("email").classList.add("is-invalid");
-            document.getElementById("emailError").innerText="Enter a valid email address!!";
+            document.getElementById("emailError").innerText="Enter a valid email address email must contain (@example.com)!!";
             event.preventDefault();
         }
         else{
@@ -109,21 +110,18 @@ function validateLogin(){
         event.preventDefault();
     }
     else{
-        document.getElementById("email").classList.remove("is-invalid");
-        document.getElementById("emailError").innerText ="";
+        var emailValidate= /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (!emailValidate.test(email)){
+            document.getElementById("emailError").classList.add("text-danger");
+            document.getElementById("email").classList.add("is-invalid");
+            document.getElementById("emailError").innerText="Email should be in (@example.com) format!!";
+            event.preventDefault();
+        }
+        else{
+            document.getElementById("emailError").innerText=""; 
+            document.getElementById("email").classList.remove("is-invalid");
+        }
     }
-    var emailValidate= /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (!emailValidate.test(email)){
-        document.getElementById("emailError").classList.add("text-danger");
-        document.getElementById("email").classList.add("is-invalid");
-        document.getElementById("emailError").innerText="Enter a valid email address!!";
-        event.preventDefault();
-    }
-    else{
-        document.getElementById("emailError").innerText=""; 
-        document.getElementById("email").classList.remove("is-invalid");
-    }
-
     if (password===""){
         document.getElementById("password").classList.add("is-invalid");
         document.getElementById("passwordError").innerText ="Enter password";
@@ -179,6 +177,16 @@ function modalValidate(event){
         document.getElementById("fname").classList.remove("is-invalid");
         document.getElementById("errorFname").innerText = "";
         isValid = true;
+        
+        if(fname.length >50){
+            document.getElementById("errorFname").innerText = "First name should only contain less than 50 characters";
+            isValid = false;
+        }
+        else{
+            document.getElementById("fname").classList.remove("is-invalid");
+            document.getElementById("errorFname").innerText = "";
+            isValid = true;
+        }
     }
     if (lname === ""){
         document.getElementById("lname").classList.add("is-invalid");
@@ -189,6 +197,16 @@ function modalValidate(event){
         document.getElementById("lname").classList.remove("is-invalid");
         document.getElementById("errorLname").innerText = "";
         isValid = true;
+
+        if(lname.length >50){
+            document.getElementById("errorLname").innerText = "Last name should only contain less than 50 characters";
+            isValid = false;
+        }
+        else{
+            document.getElementById("lname").classList.remove("is-invalid");
+            document.getElementById("errorLname").innerText = "";
+            isValid = true;
+        }
     }
     if (gender === ""){
         document.getElementById("gender").classList.add("is-invalid");
@@ -219,6 +237,16 @@ function modalValidate(event){
         document.getElementById("address").classList.remove("is-invalid");
         document.getElementById("errorAddress").innerText = "";
         isValid = true;
+
+        if(address.length >150){
+            document.getElementById("errorAddress").innerText = "Address should only contain less than 150 characters";
+            isValid = false;
+        }
+        else{
+            document.getElementById("address").classList.remove("is-invalid");
+            document.getElementById("errorAddress").innerText = "";
+            isValid = true;
+        }
     }
     if (street === ""){
         document.getElementById("street").classList.add("is-invalid");
@@ -229,6 +257,16 @@ function modalValidate(event){
         document.getElementById("street").classList.remove("is-invalid");
         document.getElementById("errorStreet").innerText = "";
         isValid = true;
+
+        if(street.length >50){
+            document.getElementById("errorStreet").innerText = "Street name should only contain less than 50 characters";
+            isValid = false;
+        }
+        else{
+            document.getElementById("street").classList.remove("is-invalid");
+            document.getElementById("errorStreet").innerText = "";
+            isValid = true;
+        }
     }
     if (phone === "") {
         document.getElementById("phone").classList.add("is-invalid");
@@ -250,13 +288,21 @@ function modalValidate(event){
     if (email === ""){
         document.getElementById("email").classList.add("is-invalid");
         document.getElementById("errorEmail").innerText = "Enter email";
-        event.preventDefault();
         isValid = false;
     }
     else{
-        document.getElementById("email").classList.remove("is-invalid");
-        document.getElementById("errorEmail").innerText = "";
-        isValid = true;
+        var emailValidate= /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (!emailValidate.test(email)){
+            document.getElementById("errorEmail").classList.add("text-danger");
+            document.getElementById("email").classList.add("is-invalid");
+            document.getElementById("errorEmail").innerText="Enter a valid email address!!";
+            isValid = false;
+        }
+        else{
+            document.getElementById("errorEmail").innerText=""; 
+            document.getElementById("email").classList.remove("is-invalid");
+            isValid = true;
+        }
     }
     if (pincode === ""){
         document.getElementById("pincode").classList.add("is-invalid");
@@ -266,18 +312,6 @@ function modalValidate(event){
     else{
         document.getElementById("pincode").classList.remove("is-invalid");
         document.getElementById("errorPincode").innerText = "";
-        isValid = true;
-    }
-    var emailValidate= /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (!emailValidate.test(email)){
-        document.getElementById("errorEmail").classList.add("text-danger");
-        document.getElementById("email").classList.add("is-invalid");
-        document.getElementById("errorEmail").innerText="Enter a valid email address!!";
-        isValid = false;
-    }
-    else{
-        document.getElementById("errorEmail").innerText=""; 
-        document.getElementById("email").classList.remove("is-invalid");
         isValid = true;
     }
 

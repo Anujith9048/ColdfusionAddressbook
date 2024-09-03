@@ -92,7 +92,14 @@ $("#register").click(function(event){
         });
     });
 
-    //EDIT ADDRESS//
+    $("#createContact").click(function(event) { 
+        event.preventDefault();
+        $("#editContact").hide(); 
+        $("#addAddress").show();  
+        $("#exampleModal").modal('show');  
+    });
+    
+//EDIT ADDRESS//
         $(".editAddress").click(function(){
             event.preventDefault();
             $.ajax({
@@ -104,14 +111,22 @@ $("#register").click(function(event){
                 dataType: "json",
                 success: function (response) {
                     var rowData = response.DATA[0];
-                   $("#fname").attr("value", `${rowData[2]}`);
-                   $("#lname").attr("value", `${rowData[3]}`);
-                   $("#dob").attr("value", `${rowData[5]}`);
-                   $("#address").attr("value", `${rowData[7]}`);
-                   $("#street").attr("value", `${rowData[8]}`);
-                   $("#phone").attr("value", `${rowData[9]}`);
-                   $("#email").attr("value", `${rowData[10]}`);
-                   $("#pincode").attr("value", `${rowData[11]}`);
+
+                    $("#addAddress").hide();
+                    $("#editContact").show();
+
+                    $("#exampleModalLabel").text("Edit Contact");
+                    $("#addAddress").text("Edit Contact");
+                    $("#title").val(rowData[1]);
+                    $("#gender").val(rowData[4]);
+                    $("#fname").attr("value", `${rowData[2]}`);
+                    $("#lname").attr("value", `${rowData[3]}`);
+                    $("#dob").attr("value", `${rowData[5]}`);
+                    $("#address").attr("value", `${rowData[7]}`);
+                    $("#street").attr("value", `${rowData[8]}`);
+                    $("#phone").attr("value", `${rowData[9]}`);
+                    $("#email").attr("value", `${rowData[10]}`);
+                    $("#pincode").attr("value", `${rowData[11]}`);
     
                 },
                 error: function (xhr, status, error) {
@@ -119,6 +134,47 @@ $("#register").click(function(event){
                 }
             });
         });
+//UPDATE ADDRESS//
+$("#editContact").click(function(){    
+    event.preventDefault();
+    var editData = new FormData();
+    editData.append("method", "updateAddress");
+    editData.append("title", $("#title").val());
+    editData.append("fname", $("#fname").val());
+    editData.append("lname", $("#lname").val());
+    editData.append("gender", $("#gender").val());
+    editData.append("dob", $("#dob").val());
+    editData.append("image", $("#image")[0].files[0]);
+    editData.append("address", $("#address").val());
+    editData.append("street", $("#street").val());
+    editData.append("phone", $("#phone").val());
+    editData.append("email", $("#email").val());
+    editData.append("pincode", $("#pincode").val());
+    
+    $.ajax({
+        url: '../components/controller.cfc',
+        method: 'post',
+        data: editData,
+        dataType: "json",
+        processData: false,
+        contentType: false, 
+        success: function (response) {
+            if(response.result){
+                $("#resultAddress").removeClass("text-danger");
+                $("#resultAddress").addClass("text-success");
+                $("#resultAddress").text("Contact updated")
+            }
+            else{
+                $("#resultAddress").removeClass("text-success");
+                $("#resultAddress").addClass("text-danger");
+                $("#resultAddress").text("Failed to update contact");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log("An error occurred : " + error);
+        }
+    });
+});
 
 //DELETE-ADDRESS//
         $(".Address").click(function(){
@@ -169,13 +225,14 @@ $(".viewAddress").click(function(event) {
         },
         dataType: "json",
         success: function(response) {
+            console.log(response);
+            
             if (response.DATA && response.DATA.length > 0) {
                 var rowData = response.DATA[0];
-                console.log(rowData[5]); 
                 
                 let table = '<table class="table table-striped">';
                 table += '<tr><th class="color-address">Name</th>';
-                table +=`<td class="color-address">${rowData[2]} ${rowData[3]}</td></tr>`;
+                table +=`<td class="color-address">${rowData[1]} ${rowData[2]} ${rowData[3]}</td></tr>`;
                 table += '<tr><th class="color-address">Gender</th>';
                 table +=`<td class="color-address">${rowData[4]}</td></tr>`;
                 table += '<tr><th class="color-address">Date of Birth</th>';
@@ -214,6 +271,7 @@ $(".viewAddress").click(function(event) {
 //ADD ADDRESS//
 $("#addAddress").click(function(event){
     event.preventDefault();
+    $("#exampleModalLabel").text("Create Contact");
 
     var formData = new FormData();
     formData.append("method", "addAddress");
@@ -241,11 +299,10 @@ $("#addAddress").click(function(event){
                 $("#resultAddress").removeClass("text-danger");
                 $("#resultAddress").addClass("text-success");
                 $("#resultAddress").text("Address added successfully");
-            }
-            else{
-                $("#resultAddress").removeClass("text-success");
-                $("#resultAddress").addClass("text-danger");
-                $("#resultAddress").text("Email already exist");
+            } else {
+                $("#email").addClass("is-invalid");
+                $("#resultAddress").text("");
+                $("#errorEmail").text("Email already exist");
             }
         },
         error: function (xhr, status, error) {
@@ -253,6 +310,8 @@ $("#addAddress").click(function(event){
         }
     });
 });
+
+
 
 
 $(".closeModal").click(function(event){
