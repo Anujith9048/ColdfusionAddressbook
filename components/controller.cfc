@@ -98,7 +98,11 @@
         <cfargument name="email" type="string">
         <cfargument name="pincode" type="string">
 
-        <cfquery name="checkEmail" datasource="myDatabase">
+
+        <cfif arguments.image EQ "undefined">
+            <cfreturn {"result":"noImg"}>
+        </cfif>
+        <cfquery name="checkAddressEmail" datasource="myDatabase">
             SELECT Email,addressId FROM savedAddress
             WHERE Email = <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
         </cfquery>
@@ -107,11 +111,8 @@
             WHERE email = <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
         </cfquery>
 
-        <cfif checkEmail.Email EQ arguments.email OR checkUserEmail.email EQ arguments.email>
-            <cfif NOT arguments.email EQ "">
-                <cfreturn {"result":"none"}>
-            </cfif>
-            <cfif checkEmail.addressId EQ session.selectId OR checkEmail.Email NEQ arguments.email>
+        <cfif arguments.email EQ checkAddressEmail.Email>
+            <cfif checkAddressEmail.addressId EQ session.selectId>
                 <cffile action="upload"
                         filefield="image"
                         destination="#expandPath('../assets/')#"
@@ -134,7 +135,36 @@
                     WHERE addressId = <cfqueryparam value="#session.selectId#" cfsqltype="cf_sql_varchar">;
                 </cfquery>
                 <cfreturn {"result":true}>
+            <cfelse>
+                <cfreturn {"result":false}>
             </cfif>
+            <cfelse>
+             <cfif arguments.email EQ checkUserEmail.Email>
+                <cfreturn {"result":false}>
+                <cfelse>
+                    <cffile action="upload"
+                    filefield="image"
+                    destination="#expandPath('../assets/')#"
+                    accept="image/*"
+                    nameconflict="makeUnique">
+                    <cfset local.uploadedFile = cffile.serverFile>
+                    <cfquery name="selectAddress" datasource="myDatabase">
+                        UPDATE savedAddress
+                        SET Title = <cfqueryparam value="#arguments.title#" cfsqltype="cf_sql_varchar">,
+                            Fname= <cfqueryparam value="#arguments.fname#" cfsqltype="cf_sql_varchar">,
+                            Lname= <cfqueryparam value="#arguments.lname#" cfsqltype="cf_sql_varchar">,
+                            Gender= <cfqueryparam value="#arguments.gender#" cfsqltype="cf_sql_varchar">,
+                            DateOfBirth= <cfqueryparam value="#arguments.dob#" cfsqltype="cf_sql_varchar">,
+                            Image= <cfqueryparam value="#local.uploadedFile#" cfsqltype="cf_sql_varchar">,
+                            Address= <cfqueryparam value="#arguments.address#" cfsqltype="cf_sql_varchar">,
+                            Street= <cfqueryparam value="#arguments.street#" cfsqltype="cf_sql_varchar">,
+                            Phone= <cfqueryparam value="#arguments.phone#" cfsqltype="cf_sql_varchar">,
+                            Email= <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">,
+                            Pincode= <cfqueryparam value="#arguments.pincode#" cfsqltype="cf_sql_varchar">
+                        WHERE addressId = <cfqueryparam value="#session.selectId#" cfsqltype="cf_sql_varchar">;
+                    </cfquery>
+                <cfreturn {"result":true}>
+             </cfif>
         </cfif>
     </cffunction>
 
@@ -149,68 +179,68 @@
 
     <!--- Function for ADD ADDRESS --->
     <cffunction name="addAddress" access="remote" returnformat="JSON">
-    <cfargument name="title" type="string">
-    <cfargument name="fname" type="string">
-    <cfargument name="lname" type="string">
-    <cfargument name="gender" type="string">
-    <cfargument name="dob" type="string">
-    <cfargument name="image" type="string">
-    <cfargument name="address" type="string">
-    <cfargument name="street" type="string">
-    <cfargument name="phone" type="string">
-    <cfargument name="email" type="string">
-    <cfargument name="pincode" type="string">
+        <cfargument name="title" type="string">
+        <cfargument name="fname" type="string">
+        <cfargument name="lname" type="string">
+        <cfargument name="gender" type="string">
+        <cfargument name="dob" type="string">
+        <cfargument name="image" type="string">
+        <cfargument name="address" type="string">
+        <cfargument name="street" type="string">
+        <cfargument name="phone" type="string">
+        <cfargument name="email" type="string">
+        <cfargument name="pincode" type="string">
     
-    <cfquery name="checkEmail" datasource="myDatabase">
+        <cfquery name="checkEmail" datasource="myDatabase">
         SELECT Email FROM savedAddress
         WHERE Email = <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
-    </cfquery>
-    <cfquery name="checkUserEmail" datasource="myDatabase">
+        </cfquery>
+        <cfquery name="checkUserEmail" datasource="myDatabase">
         SELECT Email FROM addressbookRegister
         WHERE email = <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
-    </cfquery>
+        </cfquery>
 
-    <cfif checkEmail.Email EQ arguments.email OR checkUserEmail.email EQ arguments.email>
-        <cfif NOT arguments.email EQ "">
-            <cfreturn {"result":false}>
-        </cfif>
+        <cfif checkEmail.Email EQ arguments.email OR checkUserEmail.email EQ arguments.email>
+            <cfif NOT arguments.email EQ "">
+                <cfreturn {"result":false}>
+            </cfif>
         
 
-        <cfelse>
-            <cfset local.destinationPath = expandPath('../assets/')>
-            <cfset local.result.success = false>
+            <cfelse>
+                <cfset local.destinationPath = expandPath('../assets/')>
+                <cfset local.result.success = false>
 
 
-            <cfif not directoryExists(local.destinationPath)>
+                <cfif not directoryExists(local.destinationPath)>
                 <cfdirectory action="create" directory="#local.destinationPath#">
-            </cfif>
+                </cfif>
 
-                <cffile action="upload"
+                    <cffile action="upload"
                         filefield="image"
                         destination="#expandPath('../assets/')#"
                         accept="image/*"
                         nameconflict="makeUnique">
-                <cfset local.uploadedFile = cffile.serverFile>
+                    <cfset local.uploadedFile = cffile.serverFile>
     
-            <cfquery name="addDatas" datasource="myDatabase">
-            INSERT INTO savedAddress (Title , Fname , Lname , Gender , DateOfBirth , Image ,Address , Street , Phone , Email ,Pincode, userId)
-            VALUES(
-            <cfqueryparam value="#arguments.title#" cfsqltype="cf_sql_varchar">,
-            <cfqueryparam value="#arguments.fname#" cfsqltype="cf_sql_varchar">,
-            <cfqueryparam value="#arguments.lname#" cfsqltype="cf_sql_varchar">,
-            <cfqueryparam value="#arguments.gender#" cfsqltype="cf_sql_varchar">,
-            <cfqueryparam value="#arguments.dob#" cfsqltype="cf_sql_varchar">,
-            <cfqueryparam value="#uploadedFile#" cfsqltype="cf_sql_varchar">,
-            <cfqueryparam value="#arguments.address#" cfsqltype="cf_sql_varchar">,
-            <cfqueryparam value="#arguments.street#" cfsqltype="cf_sql_varchar">,
-            <cfqueryparam value="#arguments.phone#" cfsqltype="cf_sql_varchar">,
-            <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">,
-            <cfqueryparam value="#arguments.pincode#" cfsqltype="cf_sql_varchar">,
-            <cfqueryparam value="#session.userId#" cfsqltype="cf_sql_integer">
-            )
-            </cfquery>
-            <cfreturn {"result":true}>
-    </cfif>
-  </cffunction>
+                <cfquery name="addDatas" datasource="myDatabase">
+                INSERT INTO savedAddress (Title , Fname , Lname , Gender , DateOfBirth , Image ,Address , Street , Phone , Email ,Pincode, userId)
+                VALUES(
+                <cfqueryparam value="#arguments.title#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#arguments.fname#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#arguments.lname#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#arguments.gender#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#arguments.dob#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#uploadedFile#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#arguments.address#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#arguments.street#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#arguments.phone#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#arguments.pincode#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#session.userId#" cfsqltype="cf_sql_integer">
+                )
+                </cfquery>
+                <cfreturn {"result":true}>
+        </cfif>
+    </cffunction>
   
 </cfcomponent>

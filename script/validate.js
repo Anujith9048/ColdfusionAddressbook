@@ -147,17 +147,6 @@ function modalValidate(event){
     var email = document.getElementById("email").value;
     var pincode = document.getElementById("pincode").value;
 
-   
-    if (image === ""){
-        document.getElementById("image").classList.add("is-invalid");
-        document.getElementById("errorImage").innerText = "Upload an image";
-        isValid = false;
-    }
-    else{
-        document.getElementById("image").classList.remove("is-invalid");
-        document.getElementById("errorImage").innerText = "";
-        isValid = true;
-    }
     if (title === ""){
         document.getElementById("title").classList.add("is-invalid");
         document.getElementById("errorTitle").innerText = "Select your title";
@@ -166,7 +155,6 @@ function modalValidate(event){
     else{
         document.getElementById("title").classList.remove("is-invalid");
         document.getElementById("errorTitle").innerText = "";
-        isValid = true;
     }
     if (fname === ""){
         document.getElementById("fname").classList.add("is-invalid");
@@ -176,7 +164,6 @@ function modalValidate(event){
     else{
         document.getElementById("fname").classList.remove("is-invalid");
         document.getElementById("errorFname").innerText = "";
-        isValid = true;
         
         if(fname.length >50){
             document.getElementById("errorFname").innerText = "First name should only contain less than 50 characters";
@@ -185,7 +172,6 @@ function modalValidate(event){
         else{
             document.getElementById("fname").classList.remove("is-invalid");
             document.getElementById("errorFname").innerText = "";
-            isValid = true;
         }
     }
     if (lname === ""){
@@ -196,7 +182,6 @@ function modalValidate(event){
     else{
         document.getElementById("lname").classList.remove("is-invalid");
         document.getElementById("errorLname").innerText = "";
-        isValid = true;
 
         if(lname.length >50){
             document.getElementById("errorLname").innerText = "Last name should only contain less than 50 characters";
@@ -205,7 +190,6 @@ function modalValidate(event){
         else{
             document.getElementById("lname").classList.remove("is-invalid");
             document.getElementById("errorLname").innerText = "";
-            isValid = true;
         }
     }
     if (gender === ""){
@@ -216,7 +200,6 @@ function modalValidate(event){
     else{
         document.getElementById("gender").classList.remove("is-invalid");
         document.getElementById("errorGender").innerText = "";
-        isValid = true;
     }
     if (dob === ""){
         document.getElementById("dob").classList.add("is-invalid");
@@ -226,7 +209,6 @@ function modalValidate(event){
     else{
         document.getElementById("dob").classList.remove("is-invalid");
         document.getElementById("errorDob").innerText = "";
-        isValid = true;
     }
     if (address === ""){
         document.getElementById("address").classList.add("is-invalid");
@@ -236,7 +218,6 @@ function modalValidate(event){
     else{
         document.getElementById("address").classList.remove("is-invalid");
         document.getElementById("errorAddress").innerText = "";
-        isValid = true;
 
         if(address.length >150){
             document.getElementById("errorAddress").innerText = "Address should only contain less than 150 characters";
@@ -245,7 +226,6 @@ function modalValidate(event){
         else{
             document.getElementById("address").classList.remove("is-invalid");
             document.getElementById("errorAddress").innerText = "";
-            isValid = true;
         }
     }
     if (street === ""){
@@ -256,7 +236,6 @@ function modalValidate(event){
     else{
         document.getElementById("street").classList.remove("is-invalid");
         document.getElementById("errorStreet").innerText = "";
-        isValid = true;
 
         if(street.length >50){
             document.getElementById("errorStreet").innerText = "Street name should only contain less than 50 characters";
@@ -265,25 +244,42 @@ function modalValidate(event){
         else{
             document.getElementById("street").classList.remove("is-invalid");
             document.getElementById("errorStreet").innerText = "";
-            isValid = true;
         }
     }
     if (phone === "") {
         document.getElementById("phone").classList.add("is-invalid");
         document.getElementById("errorPhone").innerText = "Enter phone number";
         isValid = false;
-    } else {
-        var phoneNum = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-        if (!phone.match(phoneNum)) { 
-            document.getElementById("phone").classList.add("is-invalid");
-            document.getElementById("errorPhone").innerText = "Enter a valid phone number";
-            isValid = false;
+    } 
+    else {
+        var cleanedPhone = phone.replace(/[^\d+]/g, '');
+        
+        if (cleanedPhone.startsWith("+91")) {
+            cleanedPhone = cleanedPhone.replace("+91", "");
+            if (cleanedPhone.length !== 10) {
+                document.getElementById("phone").classList.add("is-invalid");
+                document.getElementById("errorPhone").innerText = "Enter a 10 digit number after the country code (+91)";
+                isValid = false;
+            } else {
+                document.getElementById("phone").classList.remove("is-invalid");
+                document.getElementById("errorPhone").innerText = "";
+            }
         } else {
-            document.getElementById("phone").classList.remove("is-invalid");
-            document.getElementById("errorPhone").innerText = "";
-            isValid = true;
+            if (cleanedPhone.length !== 10) {
+                document.getElementById("phone").classList.add("is-invalid");
+                document.getElementById("errorPhone").innerText = "Enter a 10 digit number";
+                isValid = false;
+            } else if (!/^\d+$/.test(cleanedPhone)) {
+                document.getElementById("phone").classList.add("is-invalid");
+                document.getElementById("errorPhone").innerText = "Phone number should contain only digits";
+                isValid = false;
+            } else {
+                document.getElementById("phone").classList.remove("is-invalid");
+                document.getElementById("errorPhone").innerText = "";
+            }
         }
     }
+    
     
     if (email === ""){
         document.getElementById("email").classList.add("is-invalid");
@@ -301,7 +297,6 @@ function modalValidate(event){
         else{
             document.getElementById("errorEmail").innerText=""; 
             document.getElementById("email").classList.remove("is-invalid");
-            isValid = true;
         }
     }
     if (pincode === ""){
@@ -310,12 +305,21 @@ function modalValidate(event){
         isValid = false;
     }
     else{
-        document.getElementById("pincode").classList.remove("is-invalid");
-        document.getElementById("errorPincode").innerText = "";
-        isValid = true;
+        if(!pincode.match(/^\d+/)){
+            document.getElementById("pincode").classList.add("is-invalid");
+            document.getElementById("errorPincode").innerText = "Enter a valid 6 digit pincode";
+            isValid = false;
+        }
+        else{
+            document.getElementById("pincode").classList.remove("is-invalid");
+            document.getElementById("errorPincode").innerText = "";
+        }
     }
 
     if(!isValid){
-        event.preventDefault()
+       return false;
+    }
+    else{
+        return true;
     }
 }

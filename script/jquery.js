@@ -114,6 +114,7 @@ $("#register").click(function(event){
 
                     $("#addAddress").hide();
                     $("#editContact").show();
+                    $("#modalSideImage").hide();
 
                     $("#exampleModalLabel").text("Edit Contact");
                     $("#addAddress").text("Edit Contact");
@@ -127,7 +128,8 @@ $("#register").click(function(event){
                     $("#phone").attr("value", `${rowData[9]}`);
                     $("#email").attr("value", `${rowData[10]}`);
                     $("#pincode").attr("value", `${rowData[11]}`);
-    
+                    
+                    $("#modalSideBox").html(`<img class="img-fluid shadow rounded-3" id="modalSideImage" width="150" src="../assets/${rowData[6]}" alt="">`);
                 },
                 error: function (xhr, status, error) {
                     console.log("An error occurred : " + error);
@@ -159,15 +161,24 @@ $("#editContact").click(function(){
         processData: false,
         contentType: false, 
         success: function (response) {
-            if(response.result){
+            if(response.result===true){
                 $("#resultAddress").removeClass("text-danger");
                 $("#resultAddress").addClass("text-success");
-                $("#resultAddress").text("Contact updated")
-            }
+                $("#resultAddress").text("Contact updated successfully")
+
+                }
+            
+                else if(response.result==="noImg") {
+                    $("#image").addClass("is-invalid");
+                    $("#resultAddress").text("");
+                    $("#errorImage").text("Upload an image!");
+                }
             else{
-                $("#resultAddress").removeClass("text-success");
-                $("#resultAddress").addClass("text-danger");
-                $("#resultAddress").text("Failed to update contact");
+                $("#email").addClass("is-invalid");
+                $("#image").removeClass("is-invalid");
+                $("#errorImage").text("");
+                $("#resultAddress").text("");
+                $("#errorEmail").text("Email already exist");
             }
         },
         error: function (xhr, status, error) {
@@ -238,7 +249,7 @@ $(".viewAddress").click(function(event) {
                 table += '<tr><th class="color-address">Date of Birth</th>';
                 table +=`<td class="color-address">${rowData[5]}</td></tr>`;
                 table += '<tr><th class="color-address">Address</th>';
-                table +=`<td class="color-address">${rowData[7]}</td></tr>`;
+                table +=`<td class="color-address">${rowData[7]}, ${rowData[8]}</td></tr>`;
                 table += '<tr><th class="color-address">Phone</th>';
                 table +=`<td class="color-address">${rowData[9]}</td></tr>`;
                 table += '<tr><th class="color-address">Email</th>';
@@ -295,11 +306,18 @@ $("#addAddress").click(function(event){
         processData: false,
         contentType: false,  
         success: function (response) {
+            
             if(response.result){
                 $("#resultAddress").removeClass("text-danger");
                 $("#resultAddress").addClass("text-success");
                 $("#resultAddress").text("Address added successfully");
-            } else {
+            }
+            else if(response.result==="noImg") {
+                $("#image").addClass("is-invalid");
+                $("#resultAddress").text("");
+                $("#errorImage").text("Upload an image!");
+            }
+            else {
                 $("#email").addClass("is-invalid");
                 $("#resultAddress").text("");
                 $("#errorEmail").text("Email already exist");

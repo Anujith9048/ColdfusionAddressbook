@@ -207,6 +207,16 @@ label{
     border-radius: 10px;
 }
 
+.pdf-download-buttons :hover{
+  filter: drop-shadow(0 0 0.2rem crimson);
+}
+.xl-download-buttons :hover{
+  filter: drop-shadow(0 0 0.2rem rgb(4, 146, 40));
+}
+.prt-download-buttons :hover{
+  filter: drop-shadow(0 0 0.1rem rgb(0, 0, 0));
+}
+
 @keyframes glowing {
     0% { background-position: 0 0; }
     50% { background-position: 400% 0; }
