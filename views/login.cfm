@@ -11,6 +11,7 @@
             <title>Signup to AddressBook</title>
             <link rel="stylesheet" href="../style/style.css">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="icon" type="image/x-icon" href="../images/phone-book.png">
             <script src="../script/jquery-ui.min.js"></script>
             <script src="../script/validate.js"></script>
             <script src="../script/jquery.js"></script>
@@ -54,6 +55,8 @@
                             </div>
                             <div class="registr-btn mt-4 text-center">
                                 <button class="w-100 btn color-address address-btn rounded-pill" id="login" onclick="validateLogin()">Login</button>
+                                <p class="form-text mt-2 mb-2">Or Sign in using</p>
+                                <a href="##" data-bs-toggle="tooltip" data-bs-placement="top" title="Sign up using Google"><img class="mb-2" src="../images/googleSSO.png" width="40px" alt="" ></a> <br>    
                                 <a href="signup.cfm" class="text-decoration-none text-dark text-center">Don't have an account?<span class="color-address">  Signup</span></a>
                             </div>
                         </div>

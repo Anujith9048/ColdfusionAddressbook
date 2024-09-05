@@ -120,6 +120,7 @@ function validateLogin(){
         else{
             document.getElementById("emailError").innerText=""; 
             document.getElementById("email").classList.remove("is-invalid");
+            document.getElementById("email").classList.add("is-valid");
         }
     }
     if (password===""){
@@ -129,18 +130,18 @@ function validateLogin(){
     }
     else{
         document.getElementById("password").classList.remove("is-invalid");
+        document.getElementById("password").classList.add("is-valid");
         document.getElementById("passwordError").innerText ="";
     }
 }
 
-function modalValidate(event){
+function modalValidate(){
     var isValid = true;
     var title = document.getElementById("title").value;
     var fname = document.getElementById("fname").value;
     var lname = document.getElementById("lname").value;
     var gender = document.getElementById("gender").value;
     var dob = document.getElementById("dob").value;
-    var image = document.getElementById("image").value;
     var address = document.getElementById("address").value;
     var street = document.getElementById("street").value;
     var phone = document.getElementById("phone").value;
@@ -154,6 +155,7 @@ function modalValidate(event){
     }
     else{
         document.getElementById("title").classList.remove("is-invalid");
+        document.getElementById("title").classList.add("is-valid");
         document.getElementById("errorTitle").innerText = "";
     }
     if (fname === ""){
@@ -163,6 +165,7 @@ function modalValidate(event){
     }
     else{
         document.getElementById("fname").classList.remove("is-invalid");
+        document.getElementById("fname").classList.add("is-valid");
         document.getElementById("errorFname").innerText = "";
         
         if(fname.length >50){
@@ -171,6 +174,7 @@ function modalValidate(event){
         }
         else{
             document.getElementById("fname").classList.remove("is-invalid");
+            document.getElementById("fname").classList.add("is-valid");
             document.getElementById("errorFname").innerText = "";
         }
     }
@@ -181,6 +185,7 @@ function modalValidate(event){
     }
     else{
         document.getElementById("lname").classList.remove("is-invalid");
+        document.getElementById("lname").classList.add("is-valid");
         document.getElementById("errorLname").innerText = "";
 
         if(lname.length >50){
@@ -189,6 +194,7 @@ function modalValidate(event){
         }
         else{
             document.getElementById("lname").classList.remove("is-invalid");
+            document.getElementById("lname").classList.add("is-valid");
             document.getElementById("errorLname").innerText = "";
         }
     }
@@ -199,17 +205,36 @@ function modalValidate(event){
     }
     else{
         document.getElementById("gender").classList.remove("is-invalid");
+        document.getElementById("gender").classList.add("is-valid");
         document.getElementById("errorGender").innerText = "";
     }
     if (dob === ""){
         document.getElementById("dob").classList.add("is-invalid");
         document.getElementById("errorDob").innerText = "Select date of birth";
         isValid = false;
-    }
-    else{
+    } else {
         document.getElementById("dob").classList.remove("is-invalid");
+        document.getElementById("dob").classList.add("is-valid");
         document.getElementById("errorDob").innerText = "";
+    
+        const today = new Date();
+        const dateOfBirth = new Date(dob);
+    
+        today.setHours(0, 0, 0, 0);
+        dateOfBirth.setHours(0, 0, 0, 0);
+    
+        if (dateOfBirth > today) {
+            document.getElementById("dob").classList.add("is-invalid");
+            document.getElementById("errorDob").innerText = "Select date before today";
+            isValid = false;
+        } else {
+            document.getElementById("dob").classList.remove("is-invalid");
+            document.getElementById("dob").classList.add("is-valid");
+            document.getElementById("errorDob").innerText = "";
+        }
     }
+    
+
     if (address === ""){
         document.getElementById("address").classList.add("is-invalid");
         document.getElementById("errorAddress").innerText = "Enter address";
@@ -217,6 +242,7 @@ function modalValidate(event){
     }
     else{
         document.getElementById("address").classList.remove("is-invalid");
+        document.getElementById("address").classList.add("is-valid");
         document.getElementById("errorAddress").innerText = "";
 
         if(address.length >150){
@@ -224,9 +250,18 @@ function modalValidate(event){
             isValid = false;
         }
         else{
-            document.getElementById("address").classList.remove("is-invalid");
-            document.getElementById("errorAddress").innerText = "";
-        }
+
+            const tagRegex = /<.*?>/g;
+            if (tagRegex.test(address)) {
+                document.getElementById("address").classList.add("is-invalid");
+                document.getElementById("errorAddress").innerText = "<tags> are not allowed";
+                isValid = false;
+            }
+            else{
+                document.getElementById("address").classList.remove("is-invalid");
+                document.getElementById("address").classList.add("is-valid");
+                document.getElementById("errorAddress").innerText = "";
+            }
     }
     if (street === ""){
         document.getElementById("street").classList.add("is-invalid");
@@ -235,6 +270,7 @@ function modalValidate(event){
     }
     else{
         document.getElementById("street").classList.remove("is-invalid");
+        document.getElementById("street").classList.add("is-valid");
         document.getElementById("errorStreet").innerText = "";
 
         if(street.length >50){
@@ -243,6 +279,7 @@ function modalValidate(event){
         }
         else{
             document.getElementById("street").classList.remove("is-invalid");
+            document.getElementById("street").classList.add("is-valid");
             document.getElementById("errorStreet").innerText = "";
         }
     }
@@ -262,6 +299,7 @@ function modalValidate(event){
                 isValid = false;
             } else {
                 document.getElementById("phone").classList.remove("is-invalid");
+                document.getElementById("phone").classList.add("is-valid");
                 document.getElementById("errorPhone").innerText = "";
             }
         } else {
@@ -275,6 +313,7 @@ function modalValidate(event){
                 isValid = false;
             } else {
                 document.getElementById("phone").classList.remove("is-invalid");
+                document.getElementById("phone").classList.add("is-valid");
                 document.getElementById("errorPhone").innerText = "";
             }
         }
@@ -297,6 +336,7 @@ function modalValidate(event){
         else{
             document.getElementById("errorEmail").innerText=""; 
             document.getElementById("email").classList.remove("is-invalid");
+            document.getElementById("email").classList.add("is-valid");
         }
     }
     if (pincode === ""){
@@ -305,13 +345,14 @@ function modalValidate(event){
         isValid = false;
     }
     else{
-        if(!pincode.match(/^\d+/)){
+        if(!pincode.match(/^\d{6}$/)){
             document.getElementById("pincode").classList.add("is-invalid");
             document.getElementById("errorPincode").innerText = "Enter a valid 6 digit pincode";
             isValid = false;
         }
         else{
             document.getElementById("pincode").classList.remove("is-invalid");
+            document.getElementById("pincode").classList.add("is-valid");
             document.getElementById("errorPincode").innerText = "";
         }
     }
@@ -322,4 +363,19 @@ function modalValidate(event){
     else{
         return true;
     }
+}
+
+function validateImage(event){
+
+    var Image=document.getElementById("image").value;
+    if(Image ===""){
+        document.getElementById("image").classList.add("is-invalid");
+        document.getElementById("resultImage").innerText="Upload an image!";
+        event.preventDefault();
+    }
+    else{
+        document.getElementById("image").classList.remove("is-invalid");
+        document.getElementById("resultImage").innerText="";
+    }
+}
 }

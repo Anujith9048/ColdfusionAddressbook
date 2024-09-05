@@ -115,9 +115,12 @@ $("#register").click(function(event){
                     $("#addAddress").hide();
                     $("#editContact").show();
                     $("#modalSideImage").hide();
+                    $("#upload-box").hide();
 
                     $("#exampleModalLabel").text("Edit Contact");
                     $("#addAddress").text("Edit Contact");
+                    $("#image-title").text("Change Image");
+
                     $("#title").val(rowData[1]);
                     $("#gender").val(rowData[4]);
                     $("#fname").attr("value", `${rowData[2]}`);
@@ -137,55 +140,62 @@ $("#register").click(function(event){
             });
         });
 //UPDATE ADDRESS//
-$("#editContact").click(function(){    
-    event.preventDefault();
-    var editData = new FormData();
-    editData.append("method", "updateAddress");
-    editData.append("title", $("#title").val());
-    editData.append("fname", $("#fname").val());
-    editData.append("lname", $("#lname").val());
-    editData.append("gender", $("#gender").val());
-    editData.append("dob", $("#dob").val());
-    editData.append("image", $("#image")[0].files[0]);
-    editData.append("address", $("#address").val());
-    editData.append("street", $("#street").val());
-    editData.append("phone", $("#phone").val());
-    editData.append("email", $("#email").val());
-    editData.append("pincode", $("#pincode").val());
-    
-    $.ajax({
-        url: '../components/controller.cfc',
-        method: 'post',
-        data: editData,
-        dataType: "json",
-        processData: false,
-        contentType: false, 
-        success: function (response) {
-            if(response.result===true){
-                $("#resultAddress").removeClass("text-danger");
-                $("#resultAddress").addClass("text-success");
-                $("#resultAddress").text("Contact updated successfully")
+        $("#editContact").click(function(){
+            event.preventDefault();       
+                var isValid = modalValidate();
 
+                if (isValid) {
+                    event.preventDefault();
+                    let image =$("#image")[0].files[0];
+                    var editData = new FormData();
+                    if (image) {
+                        editData.append("method", "updateAddressImage");
+                        editData.append("image", image);
+                    } else {
+                        editData.append("method", "updateAddress");
+                    }
+                    editData.append("title", $("#title").val());
+                    editData.append("fname", $("#fname").val());
+                    editData.append("lname", $("#lname").val());
+                    editData.append("gender", $("#gender").val());
+                    editData.append("dob", $("#dob").val());
+                    editData.append("image", $("#image")[0].files[0]);
+                    editData.append("address", $("#address").val());
+                    editData.append("street", $("#street").val());
+                    editData.append("phone", $("#phone").val());
+                    editData.append("email", $("#email").val());
+                    editData.append("pincode", $("#pincode").val());
+    
+                    $.ajax({
+                        url: '../components/controller.cfc',
+                        method: 'post',
+                        data: editData,
+                        dataType: "json",
+                        processData: false,
+                        contentType: false, 
+                        success: function (response) {
+                            if(response.result===true){
+                                $("#resultAddress").removeClass("text-danger");
+                                $("#resultAddress").addClass("text-success");
+                                $("#resultAddress").text("Contact updated successfully")
+
+                                }
+                        else{
+                                $("#email").addClass("is-invalid");
+                                $("#image").removeClass("is-invalid");
+                                $("#errorImage").text("");
+                                $("#resultAddress").text("");
+                                $("#errorEmail").text("Email already exist");
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.log("An error occurred : " + error);
+                        }
+            });
+                } else {
+                    console.log('Validation failed');
                 }
-            
-                else if(response.result==="noImg") {
-                    $("#image").addClass("is-invalid");
-                    $("#resultAddress").text("");
-                    $("#errorImage").text("Upload an image!");
-                }
-            else{
-                $("#email").addClass("is-invalid");
-                $("#image").removeClass("is-invalid");
-                $("#errorImage").text("");
-                $("#resultAddress").text("");
-                $("#errorEmail").text("Email already exist");
-            }
-        },
-        error: function (xhr, status, error) {
-            console.log("An error occurred : " + error);
-        }
-    });
-});
+        });
 
 //DELETE-ADDRESS//
         $(".Address").click(function(){
@@ -224,57 +234,57 @@ $("#editContact").click(function(){
         });
 
 //VIEW-ADDRESS//
-$(".viewAddress").click(function(event) {
-    event.preventDefault();
-    var button = $(this);
-    $.ajax({
-        url: '../components/controller.cfc?method=selectedAddress',
-        method: 'post',
-        data: {
-            id: button.attr("data-id"),
-            ts: new Date().getTime()
-        },
-        dataType: "json",
-        success: function(response) {
-            console.log(response);
+        $(".viewAddress").click(function(event) {
+            event.preventDefault();
+            var button = $(this);
+            $.ajax({
+                url: '../components/controller.cfc?method=selectedAddress',
+                method: 'post',
+                data: {
+                    id: button.attr("data-id"),
+                    ts: new Date().getTime()
+                },
+                dataType: "json",
+                success: function(response) {
+                    console.log(response);
             
-            if (response.DATA && response.DATA.length > 0) {
-                var rowData = response.DATA[0];
+                    if (response.DATA && response.DATA.length > 0) {
+                        var rowData = response.DATA[0];
                 
-                let table = '<table class="table table-striped">';
-                table += '<tr><th class="color-address">Name</th>';
-                table +=`<td class="color-address">${rowData[1]} ${rowData[2]} ${rowData[3]}</td></tr>`;
-                table += '<tr><th class="color-address">Gender</th>';
-                table +=`<td class="color-address">${rowData[4]}</td></tr>`;
-                table += '<tr><th class="color-address">Date of Birth</th>';
-                table +=`<td class="color-address">${rowData[5]}</td></tr>`;
-                table += '<tr><th class="color-address">Address</th>';
-                table +=`<td class="color-address">${rowData[7]}, ${rowData[8]}</td></tr>`;
-                table += '<tr><th class="color-address">Phone</th>';
-                table +=`<td class="color-address">${rowData[9]}</td></tr>`;
-                table += '<tr><th class="color-address">Email</th>';
-                table +=`<td class="color-address">${rowData[10]}</td></tr>`;
-                table += '<tr><th class="color-address">Pincode</th>';
-                table +=`<td class="color-address">${rowData[11]}</td></tr>`;
-                table += '</table>';
+                        let table = '<table class="table table-striped">';
+                        table += '<tr><th class="color-address">Name</th>';
+                        table +=`<td class="color-address">${rowData[1]} ${rowData[2]} ${rowData[3]}</td></tr>`;
+                        table += '<tr><th class="color-address">Gender</th>';
+                        table +=`<td class="color-address">${rowData[4]}</td></tr>`;
+                        table += '<tr><th class="color-address">Date of Birth</th>';
+                        table +=`<td class="color-address">${rowData[5]}</td></tr>`;
+                        table += '<tr><th class="color-address">Address</th>';
+                        table +=`<td class="color-address">${rowData[7]}, ${rowData[8]}</td></tr>`;
+                        table += '<tr><th class="color-address">Phone</th>';
+                        table +=`<td class="color-address">${rowData[9]}</td></tr>`;
+                        table += '<tr><th class="color-address">Email</th>';
+                        table +=`<td class="color-address">${rowData[10]}</td></tr>`;
+                        table += '<tr><th class="color-address">Pincode</th>';
+                        table +=`<td class="color-address">${rowData[11]}</td></tr>`;
+                        table += '</table>';
 
-                let image = '<img class="img-fluid shadow rounded-3" width="150" src="../assets/';
-                image += `${rowData[6]}`;
-                image += '" alt="">';
+                        let image = '<img class="img-fluid shadow rounded-3" width="150" src="../assets/';
+                        image += `${rowData[6]}`;
+                        image += '" alt="">';
 
-                $("#address-view").html(table);
-                $("#image_view").html(image);
+                        $("#address-view").html(table);
+                        $("#image_view").html(image);
 
-                $("#viewAddress").modal("show");
-            } else {
-                console.log("No data available");
-            }
-        },
-        error: function(xhr, status, error) {
-            console.log("An error occurred: " + error);
-        }
-    });
-});
+                        $("#viewAddress").modal("show");
+                    } else {
+                        console.log("No data available");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log("An error occurred: " + error);
+                }
+            });
+        });
 
         
 

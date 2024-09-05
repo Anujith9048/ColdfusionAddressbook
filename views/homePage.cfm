@@ -9,6 +9,7 @@
             <title>Welcome #session.username# to AddressBook</title>
             <link rel="stylesheet" href="../style/style.css">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="icon" type="image/x-icon" href="../images/phone-book.png">
             <script src="../script/jquery-ui.min.js"></script>
             <script src="../script/validate.js"></script>
             <script src="../script/jquery.js"></script>
@@ -39,12 +40,12 @@
                             </a>
                         </div>
                         <div class="pdf-img-box xl-download-buttons" data-bs-toggle="tooltip" data-bs-placement="top" title="Download Excel">
-                            <a href="##">
+                            <a href="addressExcel.cfm">
                                 <img class="ms-auto" src="../images/excel.png" width="40" alt="">
                             </a>
                         </div>
                         <div class="pdf-img-box prt-download-buttons"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print Address">
-                            <a href="##">
+                            <a href="printAddress.cfm">
                                 <img class="ms-auto" src="../images/print.png" width="40" alt="">
                             </a>
                         </div>
@@ -161,8 +162,8 @@
                                         <input type="date" class="form-control" id="dob">
                                         <p id="errorDob" class="text-danger"></p>
                                     </div>
-                                    <div class="upload-box">
-                                        <label for="" class="color-address form-text fw-bold">Upload a
+                                    <div class="upload-box" id="">
+                                        <label for="" class="color-address form-text fw-bold" id="image-title">Upload a
                                             photo*</label>
                                         <input type="file" class="form-control" id="image" name="image"
                                             accept="image/*">
@@ -176,7 +177,7 @@
                                         <tr>
                                             <td>
                                                 <label for="" class="form-text fw-bold color-address">Address*</label>
-                                                <input type="text" class="form-control" placeholder="Address"
+                                                <input type="text" class="form-control " placeholder="Address"
                                                     id="address">
                                                 <p id="errorAddress" class="text-danger"></p>
                                             </td>
@@ -218,16 +219,13 @@
                                 data-bs-dismiss="modal">Close</button>
                             <button type="button" id="addAddress" class="btn btn-primary"
                                 onclick="modalValidate(event)">Add contact</button>
-                            <button type="button" id="editContact" class="btn btn-primary"
-                                onclick="modalValidate(event)">Edit contact</button>
+                            <button type="button" id="editContact" class="btn btn-primary">Edit contact</button>
                         </div>
 
                     </div>
-                    <div
-                        class="col-3 create-bg d-flex align-items-center justify-content-center rounded-end modal-image-box">
+                    <div class="col-3 create-bg d-flex align-items-center justify-content-center rounded-end modal-image-box">
                         <div class="image_container p-4 py-auto" id="modalSideBox">
-                            <img class="img-fluid" id="modalSideImage" width="100" src="../images/phone-book.png"
-                                alt="">
+                            <img class="img-fluid" id="modalSideImage" width="100" src="../images/phone-book.png" alt="">
                         </div>
                     </div>
                 </div>
@@ -274,7 +272,7 @@
                             <p>Do you really want to delete the address? This process cannot be undone.</p>
                         </div>
                         <div class="modal-footer mx-auto">
-                            <button type="button" id="closeModalEdited" class="btn btn-primary"
+                            <button type="button" id="" class="btn btn-primary"
                                 data-bs-dismiss="modal">Close</button>
                             <button type="button" id="deleteContact" class="btn btn-danger">Delete Contact</button>
                         </div>

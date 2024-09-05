@@ -12,6 +12,7 @@
     <title>Signup to AddressBook</title>
     <link rel="stylesheet" href="../style/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../images/phone-book.png">
     <script src="../script/jquery-ui.min.js"></script>
     <script src="../script/validate.js"></script>
     <script src="../script/jquery.js"></script>
