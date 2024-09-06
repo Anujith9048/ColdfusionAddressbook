@@ -57,7 +57,7 @@
                     <div class="col-2  bg-white d-flex justify-content-center rounded-3 shadow-lg">
                         <div class="d-block my-auto pb-5">
                             <img class="img-fluid ms-4 mt-5 pb-0 rounded-circle userDp"
-                                src="../assets/userDP/#session.userDP#" alt="Image #session.username#">
+                                src="#session.userDP#" alt="Image #session.username#">
                             <p class="color-address fw-bold text-center mt-2 fs-5">#session.username#</p>
                             <button class="px-3 btn address-btn-create-hover fw-bold color-address ms-2 rounded-pill"
                                 id="createContact">Create Contact</button>

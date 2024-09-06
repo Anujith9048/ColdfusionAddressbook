@@ -56,8 +56,8 @@
                             <div class="registr-btn mt-4 text-center">
                                 <button class="w-100 btn color-address address-btn rounded-pill" id="login" onclick="validateLogin()">Login</button>
                                 <p class="form-text mt-2 mb-2">Or Sign in using</p>
-                                <a href="##" data-bs-toggle="tooltip" data-bs-placement="top" title="Sign up using Google"><img class="mb-2" src="../images/googleSSO.png" width="40px" alt="" ></a> <br>    
-                                <a href="signup.cfm" class="text-decoration-none text-dark text-center">Don't have an account?<span class="color-address">  Signup</span></a>
+                                <a href="##" onclick="googleSignup()" data-bs-toggle="tooltip" data-bs-placement="top" title="Sign up using Google" class="sso-link-btn"><img class="mb-2 sso-button rounded-circle" src="../images/googleSSO.png" width="40px" alt="" ></a> <br>    
+                                <a href="signup.cfm" class="text-decoration-none text-dark text-center ">Don't have an account?<span class="color-address">  Signup</span></a>
                             </div>
                         </div>
                         <p class="text-center" id="logResult"></p>

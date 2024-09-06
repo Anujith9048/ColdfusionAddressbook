@@ -58,9 +58,10 @@ $("#register").click(function(event){
                     $("#logResult   ").addClass("text-danger");
                 }
                 else{
-                    $("#logResult   ").text("Incorect email or password!!");
+                    $("#logResult   ").text("");
                     $("#result").removeClass("text-success");
-                    $("#logResult   ").addClass("text-danger");
+                    $("#email").addClass("is-invalid");
+                    $("#password").addClass("is-invalid");
                 }
 
             },

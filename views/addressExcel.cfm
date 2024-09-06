@@ -1,14 +1,14 @@
 <cfoutput>
     <cfset excelFile = spreadsheetNew("Address List", true)>
     
-    <cfset spreadsheetAddRow(excelFile, "Image, Name, Email, Phone Number")>
+    <cfset spreadsheetAddRow(excelFile, "Title, Name, Genter, Address, Email, Phone Number,Pincode,Image,")>
 
     <cfset criteria = {userId = session.userId}>
     <cfset savedAddresses = entityLoad("savedAddress", criteria)>
     
     <cfloop array="#savedAddresses#" index="address">
         <cfset image = address.getImage()>
-        <cfset row = "#image#, #address.getFname()#, #address.getEmail()#, #address.getPhone()#">
+        <cfset row = "#address.getTitle()#, #address.getFname()# #address.getLname()#, #address.getGender()#,#address.getAddress()# #address.getStreet()#, #address.getEmail()#,#address.getPhone()#,#address.getPincode()#,#image#">
         <cfset spreadsheetAddRow(excelFile, row)>
     </cfloop>
     

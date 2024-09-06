@@ -55,7 +55,7 @@
             <cfset session.isLog = true>
             <cfset session.username = check.username>
             <cfset session.userId = check.userId>
-            <cfset session.userDP = check.profileImage>
+            <cfset session.userDP = "../assets/userDP/#check.profileImage#">
             <cfreturn {"result":true}>
 
         <cfelseif check.email EQ arguments.email AND check.password NEQ local.encryptedPass>       
@@ -66,6 +66,77 @@
 
         </cfif>
     </cffunction>
+
+
+   <!--- Function SSO login --->
+   <cffunction name="saveOrLoginUser" access="remote" returnformat="json">
+    <cfargument name="email" type="string" required="true">
+    <cfargument name="name" type="string" required="true">
+    <cfargument name="picture" type="string" required="false" default="">
+
+    <cfset var result = {"result": false, "error": "An unknown error occurred"}> <!-- Default response -->
+
+    <cftry>
+        <!-- Check if user already exists -->
+        <cfquery name="checkUser" datasource="myDatabase">
+            SELECT userId, username, profileImage 
+            FROM addressbookRegister 
+            WHERE email = <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
+        </cfquery>
+
+        <cfif checkUser.recordCount GT 0>
+            <!-- User exists, log them in -->
+            <cfset session.isLog = true>
+            <cfset session.username = checkUser.username>
+            <cfset session.userId = checkUser.userId>
+            <cfset session.userDP = arguments.picture>
+            <cfset result = {"result": true}>
+            <cflocation  url="homePage.cfm">
+            <cfreturn result> <!-- Success response -->
+        
+        <cfelse>
+            <!-- Register new user -->
+
+            <cfquery name="registerUser" datasource="myDatabase">
+                INSERT INTO addressbookRegister (name, email, username, profileImage)
+                VALUES (
+                    <cfqueryparam value="#arguments.name#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#arguments.name#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#arguments.picture#" cfsqltype="cf_sql_varchar">
+                )
+            </cfquery>
+
+            <cfquery name="getUser" datasource="myDatabase">
+                SELECT userId, username, profileImage 
+                FROM addressbookRegister 
+                WHERE email = <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
+            </cfquery>
+
+            <cfif getUser.recordCount GT 0>
+                <!-- New user registered, log them in -->
+                <cfset session.isLog = true>
+                <cfset session.username = getUser.username>
+                <cfset session.userId = getUser.userId>
+                <cfset session.userDP = getUser.profileImage>
+                <cfset result = {"result": true}>
+                <cflocation  url="homePage.cfm">
+                <cfreturn result>  <!-- Success response -->
+            </cfif>
+        </cfif>
+
+    <cfcatch type="any">
+        <cfdump var="#cfcatch.message#">
+        <cflog file="userRegistration" text="Error: #cfcatch.message#">
+        <cfset result = {"result": false, "error": "#cfcatch.message#"}>
+    </cfcatch>
+    </cftry>
+
+    <cfreturn result>
+</cffunction>
+
+
+
 
     <!--- Function for LOGOUT --->
       <cffunction name="logout" access="remote" returnformat="JSON">
@@ -266,6 +337,7 @@
         <cfquery name="checkUserEmail" datasource="myDatabase">
         SELECT Email FROM addressbookRegister
         WHERE email = <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
+        AND userId = <cfqueryparam value="#session.userId#" cfsqltype="cf_sql_varchar">
         </cfquery>
 
         <cfif checkEmail.Email EQ arguments.email OR checkUserEmail.email EQ arguments.email>
@@ -311,4 +383,4 @@
         </cfif>
     </cffunction>
   
-</cfcomponent>
+    </cfcomponent>

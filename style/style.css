@@ -207,6 +207,7 @@ label{
     border-radius: 10px;
 }
 
+
 .pdf-download-buttons :hover{
   filter: drop-shadow(0 0 0.2rem crimson);
 }

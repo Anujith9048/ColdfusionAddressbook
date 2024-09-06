@@ -5,6 +5,7 @@
         property name="Fname";
         property name="Lname";
         property name="Gender";
+        property name="DateOfBirth";
         property name="Address";
         property name="Street";
         property name="Pincode";
