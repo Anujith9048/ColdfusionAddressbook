@@ -371,13 +371,15 @@ function saveUserToDatabase(userData) {
             picture: userData.picture || ''
         },
         success: function (response) {
-            console.log(response)
             if (response.result) {
-                window.location.href = 'homePage.cfm';
+                setTimeout(function () {
+                    window.location.href = 'homePage.cfm';
+                }, 500); 
             } else {
                 console.error('Login/registration failed:', response.error);
             }
         },
+        
         error: function(xhr, status, error) {
             console.log("An error occurred: " + error);
         }

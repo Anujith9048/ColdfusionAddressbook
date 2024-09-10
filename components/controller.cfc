@@ -77,7 +77,6 @@
     <cfset var result = {"result": false, "error": "An unknown error occurred"}> <!-- Default response -->
 
     <cftry>
-        <!-- Check if user already exists -->
         <cfquery name="checkUser" datasource="myDatabase">
             SELECT userId, username, profileImage 
             FROM addressbookRegister 
@@ -85,17 +84,14 @@
         </cfquery>
 
         <cfif checkUser.recordCount GT 0>
-            <!-- User exists, log them in -->
             <cfset session.isLog = true>
             <cfset session.username = checkUser.username>
             <cfset session.userId = checkUser.userId>
             <cfset session.userDP = arguments.picture>
             <cfset result = {"result": true}>
-            <cflocation  url="homePage.cfm">
-            <cfreturn result> <!-- Success response -->
+            <cfreturn result>
         
         <cfelse>
-            <!-- Register new user -->
 
             <cfquery name="registerUser" datasource="myDatabase">
                 INSERT INTO addressbookRegister (name, email, username, profileImage)
@@ -114,14 +110,12 @@
             </cfquery>
 
             <cfif getUser.recordCount GT 0>
-                <!-- New user registered, log them in -->
                 <cfset session.isLog = true>
                 <cfset session.username = getUser.username>
                 <cfset session.userId = getUser.userId>
                 <cfset session.userDP = getUser.profileImage>
                 <cfset result = {"result": true}>
-                <cflocation  url="homePage.cfm">
-                <cfreturn result>  <!-- Success response -->
+                <cfreturn result>
             </cfif>
         </cfif>
 
