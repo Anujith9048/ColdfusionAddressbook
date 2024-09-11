@@ -1,7 +1,7 @@
 <cfoutput>
     <cfset excelFile = spreadsheetNew("Address List", true)>
     
-    <cfset spreadsheetAddRow(excelFile, "Title, Name, Genter, Address, Email, Phone Number,Pincode,Image,")>
+    <cfset spreadsheetAddRow(excelFile, "Title, Name, Genter, Address,Street, Email, Phone Number,Pincode,Image,")>
 
     <cfset criteria = {userId = session.userId}>
     <cfset savedAddresses = entityLoad("savedAddress", criteria)>
