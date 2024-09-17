@@ -49,8 +49,8 @@
         <cfquery name="check" datasource="myDatabase">
           SELECT * FROM addressbookRegister 
           WHERE email = <cfqueryparam value="#arguments.email#"  cfsqltype="cf_sql_varchar">
-  
         </cfquery>
+
         <cfif check.email EQ arguments.email AND check.password EQ local.encryptedPass>
             <cfset session.isLog = true>
             <cfset session.username = check.username>
@@ -74,7 +74,7 @@
     <cfargument name="name" type="string" required="true">
     <cfargument name="picture" type="string" required="false" default="">
 
-    <cfset var result = {"result": false, "error": "An unknown error occurred"}> <!-- Default response -->
+    <cfset var result = {"result": false, "error": "An unknown error occurred"}>
 
     <cftry>
         <cfquery name="checkUser" datasource="myDatabase">
@@ -88,9 +88,8 @@
             <cfset session.username = checkUser.username>
             <cfset session.userId = checkUser.userId>
             <cfset session.userDP = arguments.picture>
-            <cfset result = {"result": true}>
-            <cfreturn result>
-        
+    
+            <cfreturn '{"result": true, "redirect": "homePage.cfm"}'>
         <cfelse>
 
             <cfquery name="registerUser" datasource="myDatabase">
@@ -114,29 +113,30 @@
                 <cfset session.username = getUser.username>
                 <cfset session.userId = getUser.userId>
                 <cfset session.userDP = getUser.profileImage>
-                <cfset result = {"result": true}>
-                <cfreturn result>
+    
+                <cfreturn '{"result": true, "redirect": "homePage.cfm"}'>
+            <cfelse>
+                <cfreturn '{"result": false, "error": "User creation failed."}'>
             </cfif>
         </cfif>
 
+
     <cfcatch type="any">
         <cfdump var="#cfcatch.message#">
-        <cflog file="userRegistration" text="Error: #cfcatch.message#">
         <cfset result = {"result": false, "error": "#cfcatch.message#"}>
     </cfcatch>
     </cftry>
 
     <cfreturn result>
-</cffunction>
-
-
-
+   </cffunction>
 
     <!--- Function for LOGOUT --->
-      <cffunction name="logout" access="remote" returnformat="JSON">
+    <cffunction name="logout" access="remote" returnformat="JSON">
+        <cfset StructClear(session)>
+
         <cfset session.isLog = false>
         <cfreturn {"result":true}>
-      </cffunction>
+    </cffunction>
 
     <!--- Function for SELECT-ADDRESS --->
     <cffunction name="selectedAddress" access="remote" returnformat="JSON">
@@ -377,4 +377,4 @@
         </cfif>
     </cffunction>
   
-    </cfcomponent>
+</cfcomponent>

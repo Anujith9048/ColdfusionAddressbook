@@ -1,5 +1,7 @@
 <cfif session.isLog>
-    <cflocation url="homePage.cfm">
+    <cfheader statuscode="200">
+    <meta http-equiv="refresh" content="2;url=homePage.cfm">
+    <cfexit>
 
     <cfelse>
         <!DOCTYPE html>

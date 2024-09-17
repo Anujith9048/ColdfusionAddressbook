@@ -323,6 +323,7 @@ function googleSignup() {
     let param = {
         "client_id": "811341109696-67lnbab6jeath4ljtec32iq5ndfdo2e4.apps.googleusercontent.com",
         "redirect_uri": "http://127.0.0.1:8500/TASK/AddressBook/views/homePage.cfm",
+        
         "response_type": "token",
         "scope": "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
         "include_granted_scopes": 'true',
@@ -371,20 +372,15 @@ function saveUserToDatabase(userData) {
             picture: userData.picture || ''
         },
         success: function (response) {
-            if (response.result) {
-                setTimeout(function () {
-                    window.location.href = 'homePage.cfm';
-                }, 500); 
+            let result = JSON.parse(response);
+            if (result.result) {
+                window.location.href = result.redirect;
             } else {
-                console.error('Login/registration failed:', response.error);
+                console.error('Login/registration failed:', result.error);
             }
         },
-        
-        error: function(xhr, status, error) {
+        error: function(error) {
             console.log("An error occurred: " + error);
         }
     });
 }
-
-
-

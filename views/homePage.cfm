@@ -6,7 +6,7 @@
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Welcome #session.username# to AddressBook</title>
+            <title>#session.username# | AddressBook</title>
             <link rel="stylesheet" href="../style/style.css">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
             <link rel="icon" type="image/x-icon" href="../images/phone-book.png">
@@ -40,7 +40,7 @@
                             </a>
                         </div>
                         <div class="pdf-img-box xl-download-buttons" data-bs-toggle="tooltip" data-bs-placement="top" title="Download Excel">
-                            <a href="addressExcel.cfm">
+                            <a href="addressExcel.cfm?act=data">
                                 <img class="ms-auto" src="../images/excel.png" width="40" alt="">
                             </a>
                         </div>
@@ -54,13 +54,16 @@
 
                 <div class="d-flex gap-2 mt-2">
 
-                    <div class="col-2  bg-white d-flex justify-content-center rounded-3 shadow-lg">
+                    <div class="col-2  bg-white d-flex justify-content-center rounded-3 shadow-lg text-center">
                         <div class="d-block my-auto pb-5">
-                            <img class="img-fluid ms-4 mt-5 pb-0 rounded-circle userDp"
+                            <img class="img-fluid  mt-5 pb-0 rounded-circle userDp"
                                 src="#session.userDP#" alt="Image #session.username#">
                             <p class="color-address fw-bold text-center mt-2 fs-5">#session.username#</p>
-                            <button class="px-3 btn address-btn-create-hover fw-bold color-address ms-2 rounded-pill"
+                            <button class="px-3 btn address-btn-create-hover fw-bold color-address  rounded-pill"
                                 id="createContact">Create Contact</button>
+
+                            <button class="px-4 btn mt-2 text-decoration-underline  btn-outline-primary uploadExcel fw-bold color-address  rounded-pill"
+                                id="uploadExcel"  data-bs-toggle="modal" data-bs-target="##uploadModal">Upload Excel</button>  
                         </div>
                     </div>
     
@@ -277,6 +280,31 @@
                             <button type="button" id="deleteContact" class="btn btn-danger">Delete Contact</button>
                         </div>
                     </div>
+                </div>
+            </div>
+
+
+
+            <!--- Upload Excel --->
+            <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Upload Address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="button-boxes float-end mb-3">
+                            <a href="addressExcel.cfm?act=temp"><button type="button" class="btn btn-success">Plain Template</button></a>
+                           <a href="addressExcel.cfm?act=data"><button type="button" class="btn btn-primary">Template with data</button></a> 
+                        </div>
+                        <input type="file" name="excelUploaded" id="excelUploaded" class=" form-control w-50    ">
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Upload Excel</button>
+                    </div>
+                </div>
                 </div>
             </div>
         </body>

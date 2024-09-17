@@ -206,7 +206,10 @@ label{
     top: 0;
     border-radius: 10px;
 }
-
+.uploadExcel:hover{
+  background-color: #337ab7;
+  color: white!important;
+}
 
 .pdf-download-buttons :hover{
   filter: drop-shadow(0 0 0.2rem crimson);
