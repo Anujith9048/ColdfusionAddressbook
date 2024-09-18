@@ -376,5 +376,62 @@
                 <cfreturn {"result":true}>
         </cfif>
     </cffunction>
-  
+
+    <!--- Function for UPLOADED ADDRESS --->
+    <cffunction name="uploadAddress" access="remote" returnformat="JSON">
+        <cfargument name="fileUpload" type="any" required="true">
+        <cfset var local = {}>
+    
+        <cfset local.uploadDirectory = expandPath("../assets/excel/uploaded/")>
+    
+        <cfset local.response = { "success": false, "message": "", "data": "" }>
+    
+        <cftry>
+            <cffile 
+                action="upload" 
+                fileField="fileUpload" 
+                destination="#local.uploadDirectory#" 
+                nameConflict="makeunique">
+    
+            <cfset local.uploadedFile = cffile.serverFile>
+            <cfset local.filePath = "#local.uploadDirectory##local.uploadedFile#">
+    
+            <cfspreadsheet 
+                action="read" 
+                src="#local.filePath#" 
+                query="local.excelData" 
+                sheet="1">
+
+            <cfdump var="#local.excelData#">
+            <cfoutput>
+            <cfloop query="local.excelData" startrow="2">
+                <p>
+                    Title: #col_1#<br>
+                    Image: #col_10#<br>
+                    First Name: #col_2#<br>
+                    Last Name: #col_3#<br>
+                    Gender: #col_4#<br>
+                    Street: #col_5#<br>
+                    Address: #col_6#<br>
+                    Email: #col_7#<br>
+                    Phone Number: #col_8#<br>
+                    Pincode: #col_9#
+                </p>
+                <cfreturn serializeJSON("#local.excelData#")>
+            </cfloop>
+        </cfoutput>
+    
+        <cfcatch type="any">
+            <cfset local.response.success = false>
+            <cfset local.response.message = "File processing failed: #cfcatch.message#">
+        </cfcatch>
+        </cftry>
+    
+       
+    </cffunction>
+    
+    
+    
+    
+    
 </cfcomponent>

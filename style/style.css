@@ -167,7 +167,7 @@ label{
 
 .address-btn-create-hover:before {
     content: '';
-    background: linear-gradient(45deg, #337ab7, #ffffff);
+    background: linear-gradient(45deg, #337ab7, #ffffff, #ffffff);
     position: absolute;
     top: -2px;
     left:-2px;

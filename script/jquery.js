@@ -340,6 +340,28 @@ $("#addAddress").click(function(event){
     });
 });
 
+//UPLOAD EXCEL//
+$("#uploadAddress").click(function(event){
+    event.preventDefault();
+    
+    var formData = new FormData($('#addressForm')[0]);
+
+    $.ajax({
+        url: '../components/controller.cfc?method=uploadAddress',
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        success: function (response) {
+            console.log(response.DATA);
+        },
+        error: function (xhr, status, error) {
+            console.log("An error occurred: " + error);
+        }
+    });
+});
+
 
 
 
@@ -350,4 +372,3 @@ $("#closeModalEdited").click(function(event){
     location.reload(true);
 });
 });
-

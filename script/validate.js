@@ -311,6 +311,19 @@ function modalValidate() {
     return isValid;
 }
 
+function excelValidate(){
+    if(document.getElementById("fileUpload").value ===""){
+        document.getElementById("fileUpload").classList.add("is-invalid");
+        document.getElementById("excelUploadError").innerText="Select an Excel file";
+        return false;
+    }
+    else{
+        document.getElementById("fileUpload").classList.remove("is-invalid");
+        document.getElementById("fileUpload").classList.add("is-valid");
+        document.getElementById("excelUploadError").innerText="";
+        return true;
+    }
+}
 
 // Function to Google signup
 function googleSignup() {

@@ -40,7 +40,7 @@
                             </a>
                         </div>
                         <div class="pdf-img-box xl-download-buttons" data-bs-toggle="tooltip" data-bs-placement="top" title="Download Excel">
-                            <a href="addressExcel.cfm?act=data">
+                            <a href="addressExcel.cfm?act=list">
                                 <img class="ms-auto" src="../images/excel.png" width="40" alt="">
                             </a>
                         </div>
@@ -287,26 +287,29 @@
 
             <!--- Upload Excel --->
             <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Upload Address</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <div class="button-boxes float-end mb-3">
-                            <a href="addressExcel.cfm?act=temp"><button type="button" class="btn btn-success">Plain Template</button></a>
-                           <a href="addressExcel.cfm?act=data"><button type="button" class="btn btn-primary">Template with data</button></a> 
-                        </div>
-                        <input type="file" name="excelUploaded" id="excelUploaded" class=" form-control w-50    ">
-                    </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Upload Excel</button>
-                    </div>
+                <div class="modal-dialog">
+                   <form action="homePage.cfm" method="post" enctype="multipart/form-data" id="addressForm" onsubmit="excelValidate()">
+                      <div class="modal-content">
+                         <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Upload Address</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                         </div>
+                         <div class="modal-body text-center">
+                            <div class="button-boxes float-end mb-3">
+                               <a href="addressExcel.cfm?act=template"><button type="button" class="btn btn-success">Plain Template</button></a>
+                               <a href="addressExcel.cfm?act=list"><button type="button" class="btn btn-primary">Template with data</button></a>
+                            </div>
+                            <input type="file" name="fileUpload" id="fileUpload" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                            <p id="excelUploadError" class="text-danger"></p>
+                         </div>
+                         <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="uploadAddress">Upload Excel</button>
+                         </div>
+                      </div>
+                   </form>
                 </div>
-                </div>
-            </div>
+             </div>
         </body>
 
         </html>
