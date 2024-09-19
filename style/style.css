@@ -2,7 +2,7 @@
 .body{
     background-color: #d8e5f1;
     margin-top: 100px;
-    height: 100vh;
+    height: 81vh;
 }
 .create-bg{
     background-color: #e6ecf1;
@@ -23,6 +23,9 @@
         background-color: hsla(208, 56%, 46%);
         color: white !important;
     }
+}
+.table-head{
+  border-bottom: 1px solid #337ab7;
 }
 .create-title{
     border: 1px solid #337ab7 !important;
@@ -154,60 +157,7 @@ label{
   }
 
 
-  .address-btn-create-hover {
-    height: 50px;
-    border: 1px solid #337ab7;
-    color: #fff;
-    background: #ffffff;
-    cursor: pointer;
-    position: relative;
-    z-index: 0;
-    border-radius: 10px;
-}
-
-.address-btn-create-hover:before {
-    content: '';
-    background: linear-gradient(45deg, #337ab7, #ffffff, #ffffff);
-    position: absolute;
-    top: -2px;
-    left:-2px;
-    background-size: 400%;
-    z-index: -1;
-    filter: blur(5px);
-    width: calc(100%);
-    height: calc(100% + 4px);
-    animation: glowing 10s linear infinite;
-    opacity: 0;
-    transition: opacity .1s ease-in-out;
-    border-radius: 5px;
-}
-
-.address-btn-create-hover:active {
-    color: #ffffff
-}
-
-.address-btn-create-hover:active:after {
-    background: transparent;
-}
-
-.address-btn-create-hover:hover:before {
-    opacity: 1;
-}
-
-.address-btn-create-hover:after {
-    border: 1px solid #337ab7;
-    z-index: -1;
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #ffffff;
-    left: 0;
-    top: 0;
-    border-radius: 10px;
-}
 .uploadExcel:hover{
-  background-color: #337ab7;
   color: white!important;
 }
 
@@ -221,9 +171,37 @@ label{
   filter: drop-shadow(0 0 0.1rem rgb(0, 0, 0));
 }
 
+    /* Make the side panel sticky */
+    .sticky-panel {
+        position: sticky;
+        top: 0;
+        height: 66vh; /* Full viewport height */
+    }
+
+    .scrollable-table {
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .table-headings{
+      background-color: rgb(255, 0, 0);
+    }
+
+    thead  {
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 1;
+    }
+
+
+
+
+
+
+
 @keyframes glowing {
     0% { background-position: 0 0; }
     50% { background-position: 400% 0; }
     100% { background-position: 0 0; }
 }
-  

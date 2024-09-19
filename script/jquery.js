@@ -295,6 +295,10 @@ $("#addAddress").click(function(event){
     event.preventDefault();
     $("#exampleModalLabel").text("Create Contact");
 
+    if ($("#image").val() === "") {
+        alert("Upload an image");
+
+    }
     var formData = new FormData();
     formData.append("method", "addAddress");
     formData.append("title", $("#title").val());
@@ -354,7 +358,10 @@ $("#uploadAddress").click(function(event){
         contentType: false,
         dataType: "json",
         success: function (response) {
-            console.log(response.DATA);
+            if(response.result){
+                $("#excelUploadResult").addClass("text-success");
+                $("#excelUploadResult").text("Address upload successfully");
+            }
         },
         error: function (xhr, status, error) {
             console.log("An error occurred: " + error);

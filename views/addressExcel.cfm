@@ -1,7 +1,7 @@
 <cfoutput>
     <cfset excelFile = spreadsheetNew("Address List", true)>
     
-    <cfset spreadsheetAddRow(excelFile, "Title, First Name,Last Name , Genter, Street,Address, Email, Phone Number,Pincode,Image,")>
+    <cfset spreadsheetAddRow(excelFile, "Title, First Name,Last Name , Genter,Date of Birth , Street,Address, Email, Phone Number,Pincode,Image,")>
 
     <cfif url.act EQ 'list'>
         <cfset criteria = {userId = session.userId}>
@@ -9,7 +9,7 @@
     
         <cfloop array="#savedAddresses#" index="address">
             <cfset image = address.getImage()>
-            <cfset row = "#address.getTitle()#, #address.getFname()#, #address.getLname()#, #address.getGender()#, #address.getStreet()#,#address.getAddress()#, #address.getEmail()#,#address.getPhone()#,#address.getPincode()#,#image#">
+            <cfset row = "#address.getTitle()#, #address.getFname()#, #address.getLname()#, #address.getGender()#,#address.getDateOfBirth()#, #address.getStreet()#,#address.getAddress()#, #address.getEmail()#,#address.getPhone()#,#address.getPincode()#,#image#">
             <cfset spreadsheetAddRow(excelFile, row)>
         </cfloop>
     </cfif>

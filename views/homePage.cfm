@@ -54,30 +54,30 @@
 
                 <div class="d-flex gap-2 mt-2">
 
-                    <div class="col-2  bg-white d-flex justify-content-center rounded-3 shadow-lg text-center">
+                    <div class="col-2  bg-white d-flex justify-content-center rounded-3 shadow-lg text-center sticky-panel">
                         <div class="d-block my-auto pb-5">
                             <img class="img-fluid  mt-5 pb-0 rounded-circle userDp"
                                 src="#session.userDP#" alt="Image #session.username#">
                             <p class="color-address fw-bold text-center mt-2 fs-5">#session.username#</p>
-                            <button class="px-3 btn address-btn-create-hover fw-bold color-address  rounded-pill"
+                            <button class="px-3 btn  fw-bold color-address  rounded-pill btn-outline-primary uploadExcel"
                                 id="createContact">Create Contact</button>
 
-                            <button class="px-4 btn mt-2 text-decoration-underline  btn-outline-primary uploadExcel fw-bold color-address  rounded-pill"
+                            <button class="px-4 btn mt-2 text-decoration-underline  btn-outline-success uploadExcel fw-bold text-success  rounded-pill"
                                 id="uploadExcel"  data-bs-toggle="modal" data-bs-target="##uploadModal">Upload Excel</button>  
                         </div>
                     </div>
     
-                    <div class="col-10 bg-white p-3 px-4 rounded-3 shadow-lg">
+                    <div class="col-10 bg-white pb-3 px-4 rounded-3 shadow-lg scrollable-table">
                         <table class="table table-hover">
-                            <thead>
+                            <thead class="table-head">
                                 <tr>
-                                    <th scope="col" class="color-address"></th>
-                                    <th scope="col" class="color-address">Name</th>
-                                    <th scope="col" class="color-address">Email</th>
-                                    <th scope="col" class="color-address">Phone Number</th>
-                                    <th scope="col" class="color-address"></th>
-                                    <th scope="col" class="color-address"></th>
-                                    <th scope="col" class="color-address"></th>
+                                    <th scope="col" class="color-address bg-white" ></th>
+                                    <th scope="col" class="color-address bg-white pt-4">Name</th>
+                                    <th scope="col" class="color-address bg-white">Email</th>
+                                    <th scope="col" class="color-address bg-white">Phone Number</th>
+                                    <th scope="col" class="color-address bg-white"></th>
+                                    <th scope="col" class="color-address bg-white"></th>
+                                    <th scope="col" class="color-address bg-white"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -285,25 +285,26 @@
 
 
 
-            <!--- Upload Excel --->
-            <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!--- Upload Excel MODAL--->
+            <div class="modal fade" id="uploadModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                    <form action="homePage.cfm" method="post" enctype="multipart/form-data" id="addressForm" onsubmit="excelValidate()">
                       <div class="modal-content">
                          <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Upload Address</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close closeModal" data-bs-="modal" aria-label="Close"></button>
                          </div>
                          <div class="modal-body text-center">
                             <div class="button-boxes float-end mb-3">
-                               <a href="addressExcel.cfm?act=template"><button type="button" class="btn btn-success">Plain Template</button></a>
-                               <a href="addressExcel.cfm?act=list"><button type="button" class="btn btn-primary">Template with data</button></a>
+                               <a href="addressExcel.cfm?act=template"><button type="button" class="btn btn-success">Plain Template <img src="../images/excel.png" width="20" alt=""></button></a>
+                               <a href="addressExcel.cfm?act=list"><button type="button" class="btn btn-primary">Template with data <img src="../images/excel.png" width="20" alt=""></button></a>
                             </div>
                             <input type="file" name="fileUpload" id="fileUpload" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-                            <p id="excelUploadError" class="text-danger"></p>
+                            <p class="form-text m-0">You can add or update address using excel</p>
+                            <p id="excelUploadResult" class="text-center m-0"></p>
                          </div>
                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary closeModal" data-bs-="modal">Close</button>
                             <button type="submit" class="btn btn-primary" id="uploadAddress">Upload Excel</button>
                          </div>
                       </div>

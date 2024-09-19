@@ -122,7 +122,6 @@
 
 
     <cfcatch type="any">
-        <cfdump var="#cfcatch.message#">
         <cfset result = {"result": false, "error": "#cfcatch.message#"}>
     </cfcatch>
     </cftry>
@@ -381,57 +380,76 @@
     <cffunction name="uploadAddress" access="remote" returnformat="JSON">
         <cfargument name="fileUpload" type="any" required="true">
         <cfset var local = {}>
+        <cfset local.response = []>
     
         <cfset local.uploadDirectory = expandPath("../assets/excel/uploaded/")>
     
-        <cfset local.response = { "success": false, "message": "", "data": "" }>
+        <cffile 
+            action="upload" 
+            fileField="fileUpload" 
+            destination="#local.uploadDirectory#" 
+            nameConflict="makeunique">
     
-        <cftry>
-            <cffile 
-                action="upload" 
-                fileField="fileUpload" 
-                destination="#local.uploadDirectory#" 
-                nameConflict="makeunique">
+        <cfset local.uploadedFile = cffile.serverFile>
+        <cfset local.filePath = "#local.uploadDirectory##local.uploadedFile#">
     
-            <cfset local.uploadedFile = cffile.serverFile>
-            <cfset local.filePath = "#local.uploadDirectory##local.uploadedFile#">
-    
-            <cfspreadsheet 
-                action="read" 
-                src="#local.filePath#" 
-                query="local.excelData" 
-                sheet="1">
+        <cfspreadsheet 
+            action="read" 
+            src="#local.filePath#" 
+            query="local.excelData" 
+            sheet="1">
 
-            <cfdump var="#local.excelData#">
-            <cfoutput>
-            <cfloop query="local.excelData" startrow="2">
-                <p>
-                    Title: #col_1#<br>
-                    Image: #col_10#<br>
-                    First Name: #col_2#<br>
-                    Last Name: #col_3#<br>
-                    Gender: #col_4#<br>
-                    Street: #col_5#<br>
-                    Address: #col_6#<br>
-                    Email: #col_7#<br>
-                    Phone Number: #col_8#<br>
-                    Pincode: #col_9#
-                </p>
-                <cfreturn serializeJSON("#local.excelData#")>
-            </cfloop>
-        </cfoutput>
-    
-        <cfcatch type="any">
-            <cfset local.response.success = false>
-            <cfset local.response.message = "File processing failed: #cfcatch.message#">
-        </cfcatch>
-        </cftry>
-    
-       
+        <cfloop query="#local.excelData#" startrow="2">
+            <cfset local.email = htmlEditFormat(trim(local.excelData.col_8))>
+
+            <cfquery name="checkRecord" datasource="myDatabase">
+                SELECT Email FROM savedAddress
+                WHERE Email = <cfqueryparam value="#local.email#" cfsqltype="cf_sql_varchar">
+            </cfquery>
+            <cfif checkRecord.recordCount>
+                <cftry>
+                    <cfquery datasource="myDatabase">
+                        UPDATE savedAddress
+                        SET 
+                            Title = <cfqueryparam value="#local.excelData.col_1#" cfsqltype="cf_sql_varchar">,
+                            Fname = <cfqueryparam value="#local.excelData.col_2#" cfsqltype="cf_sql_varchar">,
+                            Lname = <cfqueryparam value="#local.excelData.col_3#" cfsqltype="cf_sql_varchar">,
+                            Gender = <cfqueryparam value="#local.excelData.col_4#" cfsqltype="cf_sql_varchar">,
+                            DateOfBirth = <cfqueryparam value="#local.excelData.col_5#" cfsqltype="cf_sql_varchar">,
+                            Image = <cfqueryparam value="#local.excelData.col_11#" cfsqltype="cf_sql_varchar">,
+                            Address = <cfqueryparam value="#local.excelData.col_7#" cfsqltype="cf_sql_varchar">,
+                            Street = <cfqueryparam value="#local.excelData.col_6#" cfsqltype="cf_sql_varchar">,
+                            Phone = <cfqueryparam value="#local.excelData.col_9#" cfsqltype="cf_sql_varchar">,
+                            Email = <cfqueryparam value="#local.excelData.col_8#" cfsqltype="cf_sql_varchar">,
+                            Pincode = <cfqueryparam value="#local.excelData.col_10#" cfsqltype="cf_sql_varchar">
+                        WHERE Email = <cfqueryparam value="#local.email#" cfsqltype="cf_sql_varchar">
+                    </cfquery>
+                    <cfcatch type="any">
+                    </cfcatch>
+                </cftry>
+                
+            <cfelse>
+                <cfquery name="addDatas" datasource="myDatabase">
+                    INSERT INTO savedAddress (Title , Fname , Lname , Gender , DateOfBirth , Image ,Address , Street , Phone , Email ,Pincode, userId)
+                    VALUES(
+                    <cfqueryparam value="#local.excelData.col_1#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#local.excelData.col_2#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#local.excelData.col_3#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#local.excelData.col_4#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#local.excelData.col_5#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#local.excelData.col_11#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#local.excelData.col_7#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#local.excelData.col_6#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#local.excelData.col_9#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#local.excelData.col_8#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#local.excelData.col_10#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#session.userId#" cfsqltype="cf_sql_integer">
+                    )
+                    </cfquery>
+            </cfif>
+        </cfloop>
+        <cfset result = { "result": true }>
+
+        <cfreturn serializeJSON(result)>
     </cffunction>
-    
-    
-    
-    
-    
 </cfcomponent>
