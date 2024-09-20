@@ -50,17 +50,22 @@ $("#register").click(function(event){
             dataType: "json",
             success: function (response) {
                 if (response.result ===true) {
+                    $("#email").addClass("is-valid");
+                    $("#password").addClass("is-valid");
                     window.location.href = "../views/homePage.cfm";
                 }
                 else if (response.result ==="noAccount") {
                     $("#logResult   ").text("You don't have an account please signup!!");
                     $("#result").removeClass("text-success");
                     $("#logResult   ").addClass("text-danger");
+                    $("#password").addClass("is-invalid");
+                    $("#email   ").addClass("is-invalid");
+                    $("#email   ").attr("title","An account with this email id doesn't exixt");
                 }
                 else{
                     $("#logResult   ").text("");
                     $("#result").removeClass("text-success");
-                    $("#email").addClass("is-invalid");
+                    $("#email").addClass("is-valid");
                     $("#password").addClass("is-invalid");
                 }
 

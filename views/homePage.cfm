@@ -59,10 +59,10 @@
                             <img class="img-fluid  mt-5 pb-0 rounded-circle userDp"
                                 src="#session.userDP#" alt="Image #session.username#">
                             <p class="color-address fw-bold text-center mt-2 fs-5">#session.username#</p>
-                            <button class="px-3 btn  fw-bold color-address  rounded-pill btn-outline-primary uploadExcel"
+                            <button class="px-3 btn  fw-bold color-address  rounded-pill btn-outline-primary uploadExcel" title="Add new contact"
                                 id="createContact">Create Contact</button>
 
-                            <button class="px-4 btn mt-2 text-decoration-underline  btn-outline-success uploadExcel fw-bold text-success  rounded-pill"
+                            <button class="px-4 btn mt-2 text-decoration-underline  btn-outline-success uploadExcel fw-bold text-success  rounded-pill" title="Add/Update address"
                                 id="uploadExcel"  data-bs-toggle="modal" data-bs-target="##uploadModal">Upload Excel</button>  
                         </div>
                     </div>
@@ -94,16 +94,16 @@
                                                 <td class="align-content-center">#address.getPhone()#</td>
                                                 <td class="align-content-center">
                                                     <button class="btn address-btn rounded-pill editAddress"
-                                                        id="editAddress" data-id="#address.getaddressId()#"
+                                                        id="editAddress" data-id="#address.getaddressId()#" title="Edit this contact"
                                                         data-bs-toggle="modal" data-bs-target="##exampleModal">Edit</button>
                                                 </td>
                                                 <td class="align-content-center">
                                                     <button class="btn address-btn rounded-pill Address"
-                                                        data-bs-toggle="modal" data-bs-target="##deleteModal"
+                                                        data-bs-toggle="modal" data-bs-target="##deleteModal" title="Delete this contact"
                                                         data-id="#address.getaddressId()#">Delete</button>
                                                 </td>
                                                 <td class="align-content-center">
-                                                    <button class="btn address-btn rounded-pill Address viewAddress"
+                                                    <button class="btn address-btn rounded-pill Address viewAddress" title="View this contact"
                                                         data-id="#address.getaddressId()#">View</button>
                                                 </td>
                                             </tr>
