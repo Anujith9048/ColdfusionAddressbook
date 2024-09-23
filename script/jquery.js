@@ -105,7 +105,7 @@ $("#register").click(function(event){
         $("#exampleModal").modal('show');  
     });
     
-//EDIT ADDRESS//
+//EDIT ADDRESS MODAL VIEW//
         $(".editAddress").click(function(){
             event.preventDefault();
             $.ajax({
@@ -145,7 +145,7 @@ $("#register").click(function(event){
                 }
             });
         });
-//UPDATE ADDRESS//
+//EDIT ADDRESS//
         $("#editContact").click(function(){
             event.preventDefault();       
                 var isValid = modalValidate();
@@ -301,8 +301,16 @@ $("#addAddress").click(function(event){
     $("#exampleModalLabel").text("Create Contact");
 
     if ($("#image").val() === "") {
-        alert("Upload an image");
+        $("#image").addClass("is-invalid");
+        $("#resultAddress").text("");
+        $("#errorImage").text("Upload an image!");
 
+    }
+    else{
+        $("#image").removeClass("is-invalid");
+        $("#image").addClass("is-valid");
+        $("#resultAddress").text("");
+        $("#errorImage").text("");
     }
     var formData = new FormData();
     formData.append("method", "addAddress");

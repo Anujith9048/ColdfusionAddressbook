@@ -148,7 +148,7 @@
             <cfreturn selectAddress>
     </cffunction>
 
-    <!--- Function for UPDATE-ADDRESS --->
+    <!--- Function for EDIT-ADDRESS-WITH_IMAGE --->
     <cffunction name="updateAddressImage" access="remote" returnformat="JSON">
         <cfargument name="title" type="string">
         <cfargument name="fname" type="string">
@@ -230,62 +230,40 @@
         </cfif>
     </cffunction>
 
-    <!--- Update Address--->
-        <cffunction name="updateAddress" access="remote" returnformat="JSON">
-        <cfargument name="title" type="string">
-        <cfargument name="fname" type="string">
-        <cfargument name="lname" type="string">
-        <cfargument name="gender" type="string">
-        <cfargument name="dob" type="string">
-        <cfargument name="address" type="string">
-        <cfargument name="street" type="string">
-        <cfargument name="phone" type="string">
-        <cfargument name="email" type="string">
-        <cfargument name="pincode" type="string">
+    <!--- EDIT-ADDRESS-WITHOUT_IMAGE--->
+    <cffunction name="updateAddress" access="remote" returnformat="JSON">
+            <cfargument name="title" type="string">
+            <cfargument name="fname" type="string">
+            <cfargument name="lname" type="string">
+            <cfargument name="gender" type="string">
+            <cfargument name="dob" type="string">
+            <cfargument name="address" type="string">
+            <cfargument name="street" type="string">
+            <cfargument name="phone" type="string">
+            <cfargument name="email" type="string">
+            <cfargument name="pincode" type="string">
 
 
-        <cfquery name="checkAddressEmail" datasource="myDatabase">
-            SELECT Email,addressId FROM savedAddress
-            WHERE Email = <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
-            AND userId = <cfqueryparam value="#session.userId#" cfsqltype="cf_sql_varchar">
-        </cfquery>
-        <cfquery name="checkUserEmail" datasource="myDatabase">
-            SELECT Email FROM addressbookRegister
-            WHERE email = <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
-        </cfquery>
+            <cfquery name="checkAddressEmail" datasource="myDatabase">
+                SELECT Email,addressId FROM savedAddress
+                WHERE Email = <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
+                AND userId = <cfqueryparam value="#session.userId#" cfsqltype="cf_sql_varchar">
+            </cfquery>
+            <cfquery name="checkUserEmail" datasource="myDatabase">
+                SELECT Email FROM addressbookRegister
+                WHERE email = <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
+            </cfquery>
 
-        <cfif arguments.email EQ checkAddressEmail.Email>
-            <cfif checkAddressEmail.addressId EQ session.selectId>
-                
-                <cfquery name="selectAddress" datasource="myDatabase">
-                    UPDATE savedAddress
-                    SET Title = <cfqueryparam value="#arguments.title#" cfsqltype="cf_sql_varchar">,
-                        Fname= <cfqueryparam value="#arguments.fname#" cfsqltype="cf_sql_varchar">,
-                        Lname= <cfqueryparam value="#arguments.lname#" cfsqltype="cf_sql_varchar">,
-                        Gender= <cfqueryparam value="#arguments.gender#" cfsqltype="cf_sql_varchar">,
-                        DateOfBirth= <cfqueryparam value="#arguments.dob#" cfsqltype="cf_sql_varchar">,                    
-                        Address= <cfqueryparam value="#arguments.address#" cfsqltype="cf_sql_varchar">,
-                        Street= <cfqueryparam value="#arguments.street#" cfsqltype="cf_sql_varchar">,
-                        Phone= <cfqueryparam value="#arguments.phone#" cfsqltype="cf_sql_varchar">,
-                        Email= <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">,
-                        Pincode= <cfqueryparam value="#arguments.pincode#" cfsqltype="cf_sql_varchar">
-                    WHERE addressId = <cfqueryparam value="#session.selectId#" cfsqltype="cf_sql_varchar">;
-                </cfquery>
-                <cfreturn {"result":true}>
-            <cfelse>
-                <cfreturn {"result":false}>
-            </cfif>
-            <cfelse>
-             <cfif arguments.email EQ checkUserEmail.Email>
-                <cfreturn {"result":false}>
-                <cfelse>
+            <cfif arguments.email EQ checkAddressEmail.Email>
+                <cfif checkAddressEmail.addressId EQ session.selectId>
+
                     <cfquery name="selectAddress" datasource="myDatabase">
                         UPDATE savedAddress
                         SET Title = <cfqueryparam value="#arguments.title#" cfsqltype="cf_sql_varchar">,
                             Fname= <cfqueryparam value="#arguments.fname#" cfsqltype="cf_sql_varchar">,
                             Lname= <cfqueryparam value="#arguments.lname#" cfsqltype="cf_sql_varchar">,
                             Gender= <cfqueryparam value="#arguments.gender#" cfsqltype="cf_sql_varchar">,
-                            DateOfBirth= <cfqueryparam value="#arguments.dob#" cfsqltype="cf_sql_varchar">,
+                            DateOfBirth= <cfqueryparam value="#arguments.dob#" cfsqltype="cf_sql_varchar">,                    
                             Address= <cfqueryparam value="#arguments.address#" cfsqltype="cf_sql_varchar">,
                             Street= <cfqueryparam value="#arguments.street#" cfsqltype="cf_sql_varchar">,
                             Phone= <cfqueryparam value="#arguments.phone#" cfsqltype="cf_sql_varchar">,
@@ -293,9 +271,31 @@
                             Pincode= <cfqueryparam value="#arguments.pincode#" cfsqltype="cf_sql_varchar">
                         WHERE addressId = <cfqueryparam value="#session.selectId#" cfsqltype="cf_sql_varchar">;
                     </cfquery>
-                <cfreturn {"result":true}>
-             </cfif>
-        </cfif>
+                    <cfreturn {"result":true}>
+                <cfelse>
+                    <cfreturn {"result":false}>
+                </cfif>
+                <cfelse>
+                 <cfif arguments.email EQ checkUserEmail.Email>
+                    <cfreturn {"result":false}>
+                    <cfelse>
+                        <cfquery name="selectAddress" datasource="myDatabase">
+                            UPDATE savedAddress
+                            SET Title = <cfqueryparam value="#arguments.title#" cfsqltype="cf_sql_varchar">,
+                                Fname= <cfqueryparam value="#arguments.fname#" cfsqltype="cf_sql_varchar">,
+                                Lname= <cfqueryparam value="#arguments.lname#" cfsqltype="cf_sql_varchar">,
+                                Gender= <cfqueryparam value="#arguments.gender#" cfsqltype="cf_sql_varchar">,
+                                DateOfBirth= <cfqueryparam value="#arguments.dob#" cfsqltype="cf_sql_varchar">,
+                                Address= <cfqueryparam value="#arguments.address#" cfsqltype="cf_sql_varchar">,
+                                Street= <cfqueryparam value="#arguments.street#" cfsqltype="cf_sql_varchar">,
+                                Phone= <cfqueryparam value="#arguments.phone#" cfsqltype="cf_sql_varchar">,
+                                Email= <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">,
+                                Pincode= <cfqueryparam value="#arguments.pincode#" cfsqltype="cf_sql_varchar">
+                            WHERE addressId = <cfqueryparam value="#session.selectId#" cfsqltype="cf_sql_varchar">;
+                        </cfquery>
+                    <cfreturn {"result":true}>
+                 </cfif>
+            </cfif>
     </cffunction>
 
 
@@ -404,7 +404,9 @@
 
             <cfquery name="checkRecord" datasource="myDatabase">
                 SELECT Email FROM savedAddress
-                WHERE Email = <cfqueryparam value="#local.email#" cfsqltype="cf_sql_varchar">
+                WHERE LTRIM(RTRIM(Email)) = LTRIM(RTRIM(<cfqueryparam value="#local.email#" cfsqltype="cf_sql_varchar">)) 
+                AND userId = <cfqueryparam value="#session.userId#" cfsqltype="cf_sql_integer">
+
             </cfquery>
             <cfif checkRecord.recordCount>
                 <cftry>
@@ -423,11 +425,13 @@
                             Email = <cfqueryparam value="#local.excelData.col_8#" cfsqltype="cf_sql_varchar">,
                             Pincode = <cfqueryparam value="#local.excelData.col_10#" cfsqltype="cf_sql_varchar">
                         WHERE Email = <cfqueryparam value="#local.email#" cfsqltype="cf_sql_varchar">
+                        AND userId = <cfqueryparam value="#session.userId#" cfsqltype="cf_sql_integer">
                     </cfquery>
+                    <cfset result = { "result": true }>
                     <cfcatch type="any">
+                        <cfdump var="Error: #cfcatch#">
                     </cfcatch>
                 </cftry>
-                
             <cfelse>
                 <cfquery name="addDatas" datasource="myDatabase">
                     INSERT INTO savedAddress (Title , Fname , Lname , Gender , DateOfBirth , Image ,Address , Street , Phone , Email ,Pincode, userId)
