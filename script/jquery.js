@@ -183,7 +183,8 @@ $("#register").click(function(event){
                             if(response.result===true){
                                 $("#resultAddress").removeClass("text-danger");
                                 $("#resultAddress").addClass("text-success");
-                                $("#resultAddress").text("Contact updated successfully")
+                                $("#resultAddress").text("Contact updated successfully");
+                                window.location.href="homePage.cfm";
 
                                 }
                         else{
@@ -204,40 +205,48 @@ $("#register").click(function(event){
         });
 
 //DELETE-ADDRESS//
-        $(".Address").click(function(){
-            event.preventDefault();
-            $.ajax({
-                url: '../components/controller.cfc',
-                method: 'post',
-                data: {
-                    method: "selectedAddress",
-                    id:$(this).attr("data-id")
-                },
-                dataType: "json",
-                error: function (xhr, status, error) {
-                    console.log("An error occurred : " + error);
-                }
-            });
-        });
-        $("#deleteContact").click(function(){
-            event.preventDefault();
-            $.ajax({
-                url: '../components/controller.cfc',
-                method: 'post',
-                data: {
-                    method: "deleteAddress"
-                },
-                dataType: "json",
-                success: function (response) {
-                    if(response.result){
-                        location.reload(true);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log("An error occurred : " + error);
-                }
-            });
-        });
+$(".Address").click(function(){
+    $("#confmTextDlt").addClass("text-secondary");
+    $("#confmTextDlt").removeClass("text-success");
+    $( $(this)).addClass("deleted");
+    $("#confmTextDlt").text("Do you really want to delete the address? This process cannot be undone.");
+    event.preventDefault();
+    $.ajax({
+        url: '../components/controller.cfc',
+        method: 'post',
+        data: {
+            method: "selectedAddress",
+            id:$(this).attr("data-id")
+        },
+        dataType: "json",
+        error: function (xhr, status, error) {
+            console.log("An error occurred : " + error);
+        }
+    });
+});
+$("#deleteContact").click(function(){
+    $("#confmTextDlt").removeClass("text-secondary");
+    $("#confmTextDlt").addClass("text-success");
+    event.preventDefault();
+    $.ajax({
+        url: '../components/controller.cfc',
+        method: 'post',
+        data: {
+            method: "deleteAddress"
+        },
+        dataType: "json",
+        success: function (response) {
+            $(".deleted").parents("tr").slideUp();
+            $("#confmTextDlt").text("Contact deleted Sussessfully");
+          },
+        error: function (xhr, status, error) {
+            console.log("An error occurred : " + error);
+        }
+    });
+});
+$(".closeDelete").click(function(){
+    $( ".deleted").removeClass("deleted");
+});
 
 //VIEW-ADDRESS//
         $(".viewAddress").click(function(event) {
@@ -339,6 +348,7 @@ $("#addAddress").click(function(event){
                 $("#resultAddress").removeClass("text-danger");
                 $("#resultAddress").addClass("text-success");
                 $("#resultAddress").text("Address added successfully");
+                window.location.href="homePage.cfm";
             }
             else if(response.result==="noImg") {
                 $("#image").addClass("is-invalid");
@@ -374,6 +384,7 @@ $("#uploadAddress").click(function(event){
             if(response.result){
                 $("#excelUploadResult").addClass("text-success");
                 $("#excelUploadResult").text("Address upload successfully");
+                window.location.href="homePage.cfm";
             }
         },
         error: function (xhr, status, error) {
@@ -381,9 +392,6 @@ $("#uploadAddress").click(function(event){
         }
     });
 });
-
-
-
 
 $(".closeModal").click(function(event){
     location.reload(true);

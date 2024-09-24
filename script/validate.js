@@ -214,6 +214,7 @@ function modalValidate() {
         document.getElementById("gender").removeAttribute("title");
     }
 
+    // DateOfBirth validation
     if (dob === "") {
         document.getElementById("dob").classList.add("is-invalid");
         document.getElementById("errorDob").innerText = "Select date of birth";
@@ -225,7 +226,7 @@ function modalValidate() {
         if (dateOfBirth >= today) {
             document.getElementById("dob").classList.add("is-invalid");
             document.getElementById("errorDob").innerText = "Select a date before today";
-            document.getElementById("dob").setAttribute("title", `${fname} is not in the world`);
+            document.getElementById("dob").setAttribute("title", `Is ${fname}  hasn't been born yet`);
             isValid = false;
         } else {
             document.getElementById("dob").classList.remove("is-invalid");
@@ -339,7 +340,6 @@ function modalValidate() {
         document.getElementById("pincode").removeAttribute("title");
         document.getElementById("errorPincode").innerText = "";
     }
-
     return isValid;
 }
 
