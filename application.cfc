@@ -7,7 +7,8 @@
     <cfset this.ormEnabled = true>
     <cfset this.ormSettings = {
         dbCreate = "update",
-        logsql = true
+        logsql = true,
+        cfclocation = ["components"] 
     }>
     
     <!--- Session start event --->

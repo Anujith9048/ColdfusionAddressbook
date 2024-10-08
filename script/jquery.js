@@ -116,8 +116,9 @@ $("#register").click(function(event){
                 },
                 dataType: "json",
                 success: function (response) {
-                    var rowData = response.DATA[0];
 
+                    var rowData = response.address.DATA[0];
+                    
                     $("#addAddress").hide();
                     $("#editContact").show();
                     $("#modalSideImage").hide();
@@ -126,7 +127,7 @@ $("#register").click(function(event){
                     $("#exampleModalLabel").text("Edit Contact");
                     $("#addAddress").text("Edit Contact");
                     $("#image-title").text("Change Image");
-
+                    
                     $("#title").val(rowData[1]);
                     $("#gender").val(rowData[4]);
                     $("#fname").attr("value", `${rowData[2]}`);
@@ -137,6 +138,7 @@ $("#register").click(function(event){
                     $("#phone").attr("value", `${rowData[9]}`);
                     $("#email").attr("value", `${rowData[10]}`);
                     $("#pincode").attr("value", `${rowData[11]}`);
+                    $("#roles").val(response.role);
                     
                     $("#modalSideBox").html(`<img class="img-fluid shadow rounded-3" id="modalSideImage" width="150" src="../assets/${rowData[6]}" alt="">`);
                 },
@@ -171,6 +173,7 @@ $("#register").click(function(event){
                     editData.append("phone", $("#phone").val());
                     editData.append("email", $("#email").val());
                     editData.append("pincode", $("#pincode").val());
+                    editData.append("roles", $("#roles").val());
     
                     $.ajax({
                         url: '../components/controller.cfc',
@@ -183,7 +186,8 @@ $("#register").click(function(event){
                             if(response.result===true){
                                 $("#resultAddress").removeClass("text-danger");
                                 $("#resultAddress").addClass("text-success");
-                                $("#resultAddress").text("Contact updated successfully")
+                                $("#resultAddress").text("Contact updated successfully");
+                                window.location.href="homePage.cfm";
 
                                 }
                         else{
@@ -204,40 +208,52 @@ $("#register").click(function(event){
         });
 
 //DELETE-ADDRESS//
-        $(".Address").click(function(){
-            event.preventDefault();
-            $.ajax({
-                url: '../components/controller.cfc',
-                method: 'post',
-                data: {
-                    method: "selectedAddress",
-                    id:$(this).attr("data-id")
-                },
-                dataType: "json",
-                error: function (xhr, status, error) {
-                    console.log("An error occurred : " + error);
-                }
-            });
-        });
-        $("#deleteContact").click(function(){
-            event.preventDefault();
-            $.ajax({
-                url: '../components/controller.cfc',
-                method: 'post',
-                data: {
-                    method: "deleteAddress"
-                },
-                dataType: "json",
-                success: function (response) {
-                    if(response.result){
-                        location.reload(true);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log("An error occurred : " + error);
-                }
-            });
-        });
+$(".deleteButton").click(function(event){
+    event.preventDefault();
+    
+    $("#confmTextDlt").addClass("text-secondary");
+    $("#confmTextDlt").removeClass("text-success");
+
+    var deleteId = $(this).attr("data-id");
+    $("#deleteModal").modal('show');
+
+    $("#deleteContact").attr("data-id", `${deleteId}`);
+
+    $("#confmTextDlt").text("Do you really want to delete the address? This process cannot be undone.");
+});
+
+$("#deleteContact").click(function(event){
+    event.preventDefault();
+    
+    $("#confmTextDlt").removeClass("text-secondary");
+    $("#confmTextDlt").addClass("text-success");
+
+    var deleteId = $(this).attr("data-id");
+
+    $.ajax({
+        url: '../components/controller.cfc',
+        method: 'post',
+        data: {
+            method: "deleteAddress",
+            id: deleteId
+        },
+        dataType: "json",
+        success: function(response) {
+            if(response.result){
+                $(".deleted").parents("tr").slideUp();
+                $("#confmTextDlt").text("Contact deleted successfully");
+                window.location.href="homePage.cfm"
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log("An error occurred: " + error);
+        }
+    });
+});
+
+$(".closeDelete").click(function(){
+    $( ".deleted").removeClass("deleted");
+});
 
 //VIEW-ADDRESS//
         $(".viewAddress").click(function(event) {
@@ -254,9 +270,10 @@ $("#register").click(function(event){
                 success: function(response) {
                     console.log(response);
             
-                    if (response.DATA && response.DATA.length > 0) {
-                        var rowData = response.DATA[0];
-                
+                    if (response.address.DATA && response.address.DATA.length > 0) {
+                        var rowData = response.address.DATA[0];
+                        var roleData = response.role;
+                        
                         let table = '<table class="table table-striped">';
                         table += '<tr><th class="color-address">Name</th>';
                         table +=`<td class="color-address">${rowData[1]} ${rowData[2]} ${rowData[3]}</td></tr>`;
@@ -272,6 +289,8 @@ $("#register").click(function(event){
                         table +=`<td class="color-address">${rowData[10]}</td></tr>`;
                         table += '<tr><th class="color-address">Pincode</th>';
                         table +=`<td class="color-address">${rowData[11]}</td></tr>`;
+                        table += '<tr><th class="color-address">Roles</th>';
+                        table +=`<td class="color-address">${roleData}</td></tr>`;
                         table += '</table>';
 
                         let image = '<img class="img-fluid shadow rounded-3" width="150" src="../assets/';
@@ -312,8 +331,10 @@ $("#addAddress").click(function(event){
         $("#resultAddress").text("");
         $("#errorImage").text("");
     }
+    
     var formData = new FormData();
     formData.append("method", "addAddress");
+    formData.append("roles", $("#roles").val());
     formData.append("title", $("#title").val());
     formData.append("fname", $("#fname").val());
     formData.append("lname", $("#lname").val());
@@ -339,6 +360,7 @@ $("#addAddress").click(function(event){
                 $("#resultAddress").removeClass("text-danger");
                 $("#resultAddress").addClass("text-success");
                 $("#resultAddress").text("Address added successfully");
+                window.location.href="homePage.cfm";
             }
             else if(response.result==="noImg") {
                 $("#image").addClass("is-invalid");
@@ -372,8 +394,10 @@ $("#uploadAddress").click(function(event){
         dataType: "json",
         success: function (response) {
             if(response.result){
+                console.log(response);
                 $("#excelUploadResult").addClass("text-success");
-                $("#excelUploadResult").text("Address upload successfully");
+                $("#excelUploadResult").text(`${response.add} contact added and ${response.edit} contact edited`);
+                window.location.href="homePage.cfm";
             }
         },
         error: function (xhr, status, error) {
@@ -384,11 +408,9 @@ $("#uploadAddress").click(function(event){
 
 
 
-
-$(".closeModal").click(function(event){
-    location.reload(true);
-});
-$("#closeModalEdited").click(function(event){
-    location.reload(true);
+$("select2-container").addClass("form-control");
+$(".mul-select").select2({
+    placeholder: "roles",
+    tags: true,
 });
 });

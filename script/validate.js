@@ -141,6 +141,7 @@ function validateLogin(){
 
 function modalValidate() {
     var isValid = true;
+    var role = document.getElementById("roles").value;
     var title = document.getElementById("title").value;
     var fname = document.getElementById("fname").value;
     var lname = document.getElementById("lname").value;
@@ -152,6 +153,16 @@ function modalValidate() {
     var email = document.getElementById("email").value;
     var pincode = document.getElementById("pincode").value;
 
+
+    // role validation
+    if (role.length === 0) {
+        document.getElementById("errorRole").innerText = "Select atleast one role";
+        document.getElementById("roles").setAttribute("title", "This field is required");
+        isValid = false;
+    } else {
+        document.getElementById("roles").removeAttribute("title");
+        document.getElementById("errorRole").innerText = "";
+    }
     // Title validation
     if (title === "") {
         document.getElementById("title").classList.add("is-invalid");
@@ -214,6 +225,7 @@ function modalValidate() {
         document.getElementById("gender").removeAttribute("title");
     }
 
+    // DateOfBirth validation
     if (dob === "") {
         document.getElementById("dob").classList.add("is-invalid");
         document.getElementById("errorDob").innerText = "Select date of birth";
@@ -225,7 +237,7 @@ function modalValidate() {
         if (dateOfBirth >= today) {
             document.getElementById("dob").classList.add("is-invalid");
             document.getElementById("errorDob").innerText = "Select a date before today";
-            document.getElementById("dob").setAttribute("title", `${fname} is not in the world`);
+            document.getElementById("dob").setAttribute("title", `Is ${fname}  hasn't been born yet`);
             isValid = false;
         } else {
             document.getElementById("dob").classList.remove("is-invalid");
@@ -339,7 +351,6 @@ function modalValidate() {
         document.getElementById("pincode").removeAttribute("title");
         document.getElementById("errorPincode").innerText = "";
     }
-
     return isValid;
 }
 
@@ -357,7 +368,7 @@ function excelValidate(){
     }
 }
 
-// Function to Google signup
+// Function for Google signup
 function googleSignup() {
     let oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
     let form = document.createElement('form');
@@ -429,3 +440,8 @@ function saveUserToDatabase(userData) {
         }
     });
 }
+
+
+function rotate() {
+    document.querySelector('.dropdown-image').classList.toggle('rotate');
+};

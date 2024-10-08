@@ -3,63 +3,48 @@
         <html>
             <head>
                 <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                    }
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                        margin: 20px 0;
-                        font-size: 16px;
-                        text-align: left;
-                        border-radius: 10px;
-                        box-shadow: 1px 1px 2px solid black;
-                    }
-                    th, td {
-                        padding: 12px;
-                        border: 1px solid #ddd;
-                    }
-                    th {
-                        background-color: #f2f2f2;
-                        font-weight: bold;
-                        color: #333;
-                    }
-                    tr:nth-child(even) {
-                        background-color: #f9f9f9;
-                    }
-                    tr:hover {
-                        background-color: #f1f1f1;
-                    }
-                    img {
-                        border-radius: 50%;
-                        width: 40px;
-                    }
                 </style>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+                <link href="../style/style.css" rel="stylesheet">
             </head>
             <cfoutput>
             <body>
-                <h2 class="text-center">Address List</h2>
-                <table class="table align-content-center">
+                <h2 class="text-center color-address fw-bold">Address List</h2>
+                <table class="table-striped align-content-center">
                     <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone Number</th>
+                        <tr  class="fw-bold bg-address text-white mb-3 gap-3">
+                            <th scope="col">Image</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone Number</th>
+                            <th scope="col">Data Of Birth</th>
+                            <th scope="col">Roles</th>
                         </tr>
+
                     </thead>
                     <tbody>
-                        <cfset criteria={userId=session.userId}>
-                        <cfset savedAddresses=entityLoad("savedAddress", criteria)>
+                        <cfset local.criteria={userId=session.userId}>
+                        <cfset savedAddresses=entityLoad("savedAddress", local.criteria)>
+                        <cfset local.roleList="">
+                            
                         <cfloop array="#savedAddresses#" index="address">
-                            <tr>
+                            <cfset local.condition={addressId=address.getaddressId()}>
+                            <cfset local.role=EntityLoad("roleList",local.condition)>
+                            <cfloop array="#local.role#" index="roles">
+                                <cfset local.roleList = listAppend(local.roleList, roles.getrole(), "  ")>
+                            </cfloop>
+                            
+                            <tr class="mt-2 mt-2">
                                 <td class="align-content-center">
-                                    <img src="../assets/#address.getImage()#" alt="Address Image">
+                                    <img src="../assets/#address.getImage()#" height="40" width="40" alt="Address Image" class="image rounded-circle">
                                 </td>
-                                <td class="align-content-center">#address.getFname()#</td>
+                                <td class="align-content-center ms-3">#address.getTitle()# #address.getFname()# #address.getLname()#</td>
                                 <td class="align-content-center">#address.getEmail()#</td>
                                 <td class="align-content-center">#address.getPhone()#</td>
+                                <td class="align-content-center">#address.getDateOfBirth()#</td>
+                                <td class="align-content-center">#local.roleList#</td>
                             </tr>
+                            <cfset local.roleList="">
                         </cfloop>
                     </tbody>
                 </table>
@@ -68,7 +53,7 @@
         </html>
     </cfhtmltopdf>
 <cfoutput>
-    <cfheader name="Content-Disposition" value="attachment; filename=address.pdf">
+    <cfheader name="Content-Disposition" value="attachment; filename=#session.username#'s_address.pdf">
     <cfcontent file="#ExpandPath('../assets/pdf/address.pdf')#" type="application/pdf">
     <cfabort>
 

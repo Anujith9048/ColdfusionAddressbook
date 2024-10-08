@@ -6,7 +6,7 @@
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>#session.username# | AddressBook</title>
+            <title>#session.username# | AddressBook Copy</title>
             <link rel="stylesheet" href="../style/style.css">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
             <link rel="icon" type="image/x-icon" href="../images/phone-book.png">
@@ -15,22 +15,37 @@
             <script src="../script/jquery.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+            <link rel="stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+            
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
         </head>
 
         <body class="body">
             <nav class="navbar navbar-light address-nav fixed-top shadow">
                 <div class="container-fluid mx-4">
-                    <a class="navbar-brand text-white fw-bold"><img width="35" class="mb-1 pe-2 shadow"
-                            src="../images/phone-book.png" alt="">ADDRESS BOOK</a>
-                    <div class="d-flex gap-4 ">
+                    <a class="navbar-brand text-white fw-bold">
+                        <img width="35" class="mb-1 pe-2 shadow" src="../images/phone-book.png" alt=""> ADDRESS BOOK
+                    </a>
+                    <div class=" gap-4 ">
                         <div class="d-flex align-items-center gap-1 nav-butns btn">
-                            <img width="20" height="20" src="../images/logout.png" alt="">
-                            <a href="##" id="logout" class="text-decoration-none text-white py-2"> Logout</a>
+                            <!-- Toggle button for collapse -->
+                            <button class="navbar-toggler py-2" type="button" data-bs-toggle="collapse" data-bs-target="##navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="rotate()">
+                                <img width="30" height="30" src="#session.userDP#" alt="Toggle Logout" class="rounded-circle">
+                                <img width="20" height="20" src="../images/dropdown.png" alt="Toggle Logout" class="dropdown-image">
+                            </button>
+                        </div>
+                        <!-- Collapsible content (Logout link) -->
+                        <div class="collapse collapse-container rounded-bottom" id="navbarCollapse">
+                            <a href="##" id="logout" class="text-decoration-none py-2 log-butn btn ms-3"> Logout</a>
                         </div>
                     </div>
                 </div>
             </nav>
-            <div class="col-10 mt-5 mx-auto">
+            
+            <div class="col-10 mt-5 mx-auto list-view-contents">
 
                 <div class="col-12 bg-light px-3 p-2 text-center">
                     <div class="d-flex justify-content-end gap-2">
@@ -98,7 +113,7 @@
                                                         data-bs-toggle="modal" data-bs-target="##exampleModal">Edit</button>
                                                 </td>
                                                 <td class="align-content-center">
-                                                    <button class="btn address-btn rounded-pill Address"
+                                                    <button class="btn address-btn rounded-pill deleteButton"
                                                         data-bs-toggle="modal" data-bs-target="##deleteModal" title="Delete this contact"
                                                         data-id="#address.getaddressId()#">Delete</button>
                                                 </td>
@@ -211,6 +226,17 @@
                                                     id="pincode" maxlength="6">
                                                 <p id="errorPincode" class="text-danger"></p>
                                             </td>
+                                            <td>
+                                                <label for="" class="form-text fw-bold color-address">Roles*</label>
+                                                    <select id="roles" class="mul-select rolesSelect" multiple="true">
+                                                        <option id="sports" value="Manager">Manager</option>
+                                                        <option id="videogames" value="Driver">Driver</option>
+                                                        <option id="painting" value="Cleaner">Cleaner</option>
+                                                        <option id="drawing" value="Admin">Admin</option>
+                                                        <option id="reading" value="Supervisor">Supervisor</option>
+                                                    </select>
+                                                <p id="errorRole" class="text-danger"></p>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -218,11 +244,10 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="closeModal" class="btn btn-secondary closeModal"
-                                data-bs-dismiss="modal">Close</button>
+                            <button type="button" id="closeModal" class="btn btn-secondary "data-bs-dismiss="modal">Close</button>
                             <button type="button" id="addAddress" class="btn btn-primary"
-                                onclick="modalValidate(event)">Add contact</button>
-                            <button type="button" id="editContact" class="btn btn-primary">Edit contact</button>
+                                onclick="modalValidate(event)">Add Contact</button>
+                            <button type="button" id="editContact" class="btn btn-primary">Save Contact</button>
                         </div>
 
                     </div>
@@ -237,7 +262,7 @@
             <div class="shadow-lg modal fade" id="viewAddress" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog modal-lg d-flex gap-0">
-                    <div class="modal-content border-0 rounded-0 rounded-start">
+                    <div class="modal-content border-0 rounded-start">
                         <div class="modal-header create-bg">
                             <h5 class="modal-title color-address create-title w-100 text-center py-2 rounded-pill"
                                 id="exampleModalLabel">View Contact</h5>
@@ -272,10 +297,10 @@
                             <h4 class="modal-title">Are you sure?</h4>
                         </div>
                         <div class="modal-body">
-                            <p>Do you really want to delete the address? This process cannot be undone.</p>
+                            <p id="confmTextDlt" class="text-secondary">Do you really want to delete the address? This process cannot be undone.</p>
                         </div>
                         <div class="modal-footer mx-auto">
-                            <button type="button" id="" class="btn btn-primary"
+                            <button type="button" id="" class="btn btn-primary closeDelete"
                                 data-bs-dismiss="modal">Close</button>
                             <button type="button" id="deleteContact" class="btn btn-danger">Delete Contact</button>
                         </div>
@@ -304,7 +329,7 @@
                             <p id="excelUploadResult" class="text-center m-0"></p>
                          </div>
                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary closeModal" data-bs-="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary" id="uploadAddress">Upload Excel</button>
                          </div>
                       </div>

@@ -7,8 +7,44 @@
 .create-bg{
     background-color: #e6ecf1;
 }
-.bg-address ,.address-nav{
+.bg-address {
     background-color: #337ab7;
+}
+.address-nav {
+  position: relative;
+  background-image: linear-gradient(to right, #337ab7 , #3352b7);
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+.address-nav::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(https://cdn.kekastatic.net/shared/assets/images/components/page-header/0.png);
+  background-position: left;
+  background-size: auto;
+  background-repeat: no-repeat;
+  opacity: 0.3; 
+  z-index: 1; 
+}
+
+.address-nav * {
+  position: relative;
+  z-index: 2;
+}
+.navbar-toggler{
+  border: 1px solid rgba(255, 255, 255, 0.808) !important;
+  background-image: linear-gradient(to right, transparent , #3340b769);
+
+}
+.navbar-toggler:focus{
+  outline: 1px solid red;
+  box-shadow: none !important;
 }
 .color-address{
     color: #337ab7 !important;
@@ -34,7 +70,7 @@
     cursor: pointer;
 }
 .nav-butns:hover{
-    background-color: hsl(208, 56%, 43%);
+    background-color: #3352b7;
     
 }
 .form-signup{
@@ -194,12 +230,30 @@ label{
         z-index: 1;
     }
 
+    .select2-container{
+      width: 100% !important;
+    }
+.log-butn{
+  background-color: white !important;
+  color: #3352b7 !important;
+  border: 1px solid #ffffff !important;
+}
+.dropdown-image {
+  transition: transform 0.3s ease;
+}
 
-
-
-
-
-
+.rotate {
+  transform: rotate(180deg);
+}
+.modal-open .list-view-contents{
+  filter: blur(3px);
+}
+.modal{
+  filter: drop-shadow(8px 8px 8px rgba(41, 41, 41, 0.247));
+}
+table{
+  border: 0px solid rgb(236, 236, 236) !important;
+}
 @keyframes glowing {
     0% { background-position: 0 0; }
     50% { background-position: 400% 0; }
