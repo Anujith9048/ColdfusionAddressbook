@@ -162,7 +162,6 @@
         <cfargument name="email" type="string">
         <cfargument name="pincode" type="string">
 
-
         <cfquery name="checkAddressEmail" datasource="myDatabase">
             SELECT Email,addressId FROM savedAddress
             WHERE Email = <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
@@ -301,9 +300,10 @@
 
     <!--- Function for deleteAddress --->
     <cffunction name="deleteAddress" access="remote" returnformat="JSON">
+        <cfargument name="id" type="numeric">
         <cfquery name="deleteData" datasource="myDatabase">
-        DELETE FROM savedAddress 
-        WHERE addressId = #session.selectId#
+            DELETE FROM savedAddress 
+            WHERE addressId = #arguments.id#
         </cfquery>
         <cfreturn {"result":true}>
     </cffunction>
@@ -358,18 +358,18 @@
                 <cfquery name="addDatas" datasource="myDatabase">
                 INSERT INTO savedAddress (Title , Fname , Lname , Gender , DateOfBirth , Image ,Address , Street , Phone , Email ,Pincode, userId)
                 VALUES(
-                <cfqueryparam value="#arguments.title#" cfsqltype="cf_sql_varchar">,
-                <cfqueryparam value="#arguments.fname#" cfsqltype="cf_sql_varchar">,
-                <cfqueryparam value="#arguments.lname#" cfsqltype="cf_sql_varchar">,
-                <cfqueryparam value="#arguments.gender#" cfsqltype="cf_sql_varchar">,
-                <cfqueryparam value="#arguments.dob#" cfsqltype="cf_sql_varchar">,
-                <cfqueryparam value="#uploadedFile#" cfsqltype="cf_sql_varchar">,
-                <cfqueryparam value="#arguments.address#" cfsqltype="cf_sql_varchar">,
-                <cfqueryparam value="#arguments.street#" cfsqltype="cf_sql_varchar">,
-                <cfqueryparam value="#arguments.phone#" cfsqltype="cf_sql_varchar">,
-                <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">,
-                <cfqueryparam value="#arguments.pincode#" cfsqltype="cf_sql_varchar">,
-                <cfqueryparam value="#session.userId#" cfsqltype="cf_sql_integer">
+                <cfqueryparam value="#trim(arguments.title)#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#trim(arguments.fname)#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#trim(arguments.lname)#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#trim(arguments.gender)#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#trim(arguments.dob)#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#trim(uploadedFile)#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#trim(arguments.address)#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#trim(arguments.street)#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#trim(arguments.phone)#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#trim(arguments.email)#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#trim(arguments.pincode)#" cfsqltype="cf_sql_varchar">,
+                <cfqueryparam value="#trim(session.userId)#" cfsqltype="cf_sql_integer">
                 )
                 </cfquery>
                 <cfreturn {"result":true}>
@@ -413,18 +413,18 @@
                     <cfquery datasource="myDatabase">
                         UPDATE savedAddress
                         SET 
-                            Title = <cfqueryparam value="#local.excelData.col_1#" cfsqltype="cf_sql_varchar">,
-                            Fname = <cfqueryparam value="#local.excelData.col_2#" cfsqltype="cf_sql_varchar">,
-                            Lname = <cfqueryparam value="#local.excelData.col_3#" cfsqltype="cf_sql_varchar">,
-                            Gender = <cfqueryparam value="#local.excelData.col_4#" cfsqltype="cf_sql_varchar">,
-                            DateOfBirth = <cfqueryparam value="#local.excelData.col_5#" cfsqltype="cf_sql_varchar">,
-                            Image = <cfqueryparam value="#local.excelData.col_11#" cfsqltype="cf_sql_varchar">,
-                            Address = <cfqueryparam value="#local.excelData.col_7#" cfsqltype="cf_sql_varchar">,
-                            Street = <cfqueryparam value="#local.excelData.col_6#" cfsqltype="cf_sql_varchar">,
-                            Phone = <cfqueryparam value="#local.excelData.col_9#" cfsqltype="cf_sql_varchar">,
-                            Email = <cfqueryparam value="#local.excelData.col_8#" cfsqltype="cf_sql_varchar">,
-                            Pincode = <cfqueryparam value="#local.excelData.col_10#" cfsqltype="cf_sql_varchar">
-                        WHERE Email = <cfqueryparam value="#local.email#" cfsqltype="cf_sql_varchar">
+                        Title = <cfqueryparam value="#trim(local.excelData.col_1)#" cfsqltype="cf_sql_varchar">,
+                            Fname = <cfqueryparam value="#trim(local.excelData.col_2)#" cfsqltype="cf_sql_varchar">,
+                            Lname = <cfqueryparam value="#trim(local.excelData.col_3)#" cfsqltype="cf_sql_varchar">,
+                            Gender = <cfqueryparam value="#trim(local.excelData.col_4)#" cfsqltype="cf_sql_varchar">,
+                            DateOfBirth = <cfqueryparam value="#dateFormat(trim(local.excelData.col_5),"yyyy-mm-dd")#" cfsqltype="cf_sql_varchar">,
+                            Image = <cfqueryparam value="#trim(local.excelData.col_11)#" cfsqltype="cf_sql_varchar">,
+                            Address = <cfqueryparam value="#trim(local.excelData.col_7)#" cfsqltype="cf_sql_varchar">,
+                            Street = <cfqueryparam value="#trim(local.excelData.col_6)#" cfsqltype="cf_sql_varchar">,
+                            Phone = <cfqueryparam value="#trim(local.excelData.col_9)#" cfsqltype="cf_sql_varchar">,
+                            Email = <cfqueryparam value="#trim(local.excelData.col_8)#" cfsqltype="cf_sql_varchar">,
+                            Pincode = <cfqueryparam value="#trim(local.excelData.col_10)#" cfsqltype="cf_sql_varchar">
+                        WHERE Email = <cfqueryparam value="#trim(local.email)#" cfsqltype="cf_sql_varchar">
                         AND userId = <cfqueryparam value="#session.userId#" cfsqltype="cf_sql_integer">
                     </cfquery>
                     <cfset result = { "result": true }>
@@ -436,17 +436,17 @@
                 <cfquery name="addDatas" datasource="myDatabase">
                     INSERT INTO savedAddress (Title , Fname , Lname , Gender , DateOfBirth , Image ,Address , Street , Phone , Email ,Pincode, userId)
                     VALUES(
-                    <cfqueryparam value="#local.excelData.col_1#" cfsqltype="cf_sql_varchar">,
-                    <cfqueryparam value="#local.excelData.col_2#" cfsqltype="cf_sql_varchar">,
-                    <cfqueryparam value="#local.excelData.col_3#" cfsqltype="cf_sql_varchar">,
-                    <cfqueryparam value="#local.excelData.col_4#" cfsqltype="cf_sql_varchar">,
-                    <cfqueryparam value="#local.excelData.col_5#" cfsqltype="cf_sql_varchar">,
-                    <cfqueryparam value="#local.excelData.col_11#" cfsqltype="cf_sql_varchar">,
-                    <cfqueryparam value="#local.excelData.col_7#" cfsqltype="cf_sql_varchar">,
-                    <cfqueryparam value="#local.excelData.col_6#" cfsqltype="cf_sql_varchar">,
-                    <cfqueryparam value="#local.excelData.col_9#" cfsqltype="cf_sql_varchar">,
-                    <cfqueryparam value="#local.excelData.col_8#" cfsqltype="cf_sql_varchar">,
-                    <cfqueryparam value="#local.excelData.col_10#" cfsqltype="cf_sql_varchar">,
+                        <cfqueryparam value="#trim(local.excelData.col_1)#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#trim(local.excelData.col_2)#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#trim(local.excelData.col_3)#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#trim(local.excelData.col_4)#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#trim(local.excelData.col_5)#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#trim(local.excelData.col_11)#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#trim(local.excelData.col_7)#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#trim(local.excelData.col_6)#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#trim(local.excelData.col_9)#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#trim(local.excelData.col_8)#" cfsqltype="cf_sql_varchar">,
+                    <cfqueryparam value="#trim(local.excelData.col_10)#" cfsqltype="cf_sql_varchar">,
                     <cfqueryparam value="#session.userId#" cfsqltype="cf_sql_integer">
                     )
                     </cfquery>

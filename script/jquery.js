@@ -147,7 +147,7 @@ $("#register").click(function(event){
         });
 //EDIT ADDRESS//
         $("#editContact").click(function(){
-            event.preventDefault();       
+            event.preventDefault();
                 var isValid = modalValidate();
 
                 if (isValid) {
@@ -185,7 +185,6 @@ $("#register").click(function(event){
                                 $("#resultAddress").addClass("text-success");
                                 $("#resultAddress").text("Contact updated successfully");
                                 window.location.href="homePage.cfm";
-
                                 }
                         else{
                                 $("#email").addClass("is-invalid");
@@ -205,45 +204,49 @@ $("#register").click(function(event){
         });
 
 //DELETE-ADDRESS//
-$(".Address").click(function(){
+$(".deleteButton").click(function(event){
+    event.preventDefault();
+    
     $("#confmTextDlt").addClass("text-secondary");
     $("#confmTextDlt").removeClass("text-success");
-    $( $(this)).addClass("deleted");
+
+    var deleteId = $(this).attr("data-id");
+    $("#deleteModal").modal('show');
+
+    $("#deleteContact").attr("data-id", `${deleteId}`);
+
     $("#confmTextDlt").text("Do you really want to delete the address? This process cannot be undone.");
-    event.preventDefault();
-    $.ajax({
-        url: '../components/controller.cfc',
-        method: 'post',
-        data: {
-            method: "selectedAddress",
-            id:$(this).attr("data-id")
-        },
-        dataType: "json",
-        error: function (xhr, status, error) {
-            console.log("An error occurred : " + error);
-        }
-    });
 });
-$("#deleteContact").click(function(){
+
+$("#deleteContact").click(function(event){
+    event.preventDefault();
+    
     $("#confmTextDlt").removeClass("text-secondary");
     $("#confmTextDlt").addClass("text-success");
-    event.preventDefault();
+
+    var deleteId = $(this).attr("data-id");
+
     $.ajax({
         url: '../components/controller.cfc',
         method: 'post',
         data: {
-            method: "deleteAddress"
+            method: "deleteAddress",
+            id: deleteId
         },
         dataType: "json",
-        success: function (response) {
-            $(".deleted").parents("tr").slideUp();
-            $("#confmTextDlt").text("Contact deleted Sussessfully");
-          },
-        error: function (xhr, status, error) {
-            console.log("An error occurred : " + error);
+        success: function(response) {
+            if(response.result){
+                $(".deleted").parents("tr").slideUp();
+                $("#confmTextDlt").text("Contact deleted successfully");
+                window.location.href="homePage.cfm"
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log("An error occurred: " + error);
         }
     });
 });
+
 $(".closeDelete").click(function(){
     $( ".deleted").removeClass("deleted");
 });
@@ -393,10 +396,4 @@ $("#uploadAddress").click(function(event){
     });
 });
 
-$(".closeModal").click(function(event){
-    location.reload(true);
-});
-$("#closeModalEdited").click(function(event){
-    location.reload(true);
-});
 });

@@ -7,36 +7,41 @@
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>#session.username# | AddressBook</title>
+            <link rel="icon" type="image/x-icon" href="../images/phone-book.png">
             <link rel="stylesheet" href="../style/style.css">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-            <link rel="icon" type="image/x-icon" href="../images/phone-book.png">
+            <link rel="stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
             <script src="../script/jquery-ui.min.js"></script>
             <script src="../script/validate.js"></script>
             <script src="../script/jquery.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
-            <link rel="stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-            
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css">
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
         </head>
 
         <body class="body">
             <nav class="navbar navbar-light address-nav fixed-top shadow">
                 <div class="container-fluid mx-4">
-                    <a class="navbar-brand text-white fw-bold"><img width="35" class="mb-1 pe-2 shadow"
-                            src="../images/phone-book.png" alt="">ADDRESS BOOK</a>
-                    <div class="d-flex gap-4 ">
-                        <div class="d-flex align-items-center gap-1 nav-butns btn">
-                            <img width="20" height="20" src="../images/logout.png" alt="">
-                            <a href="##" id="logout" class="text-decoration-none text-white py-2"> Logout</a>
+                    <a class="navbar-brand text-white fw-bold logo-txt pe-0" href="homePage.cfm">
+                        <img width="35" class="mb-1 pe-2 shadow" src="../images/phone-book.png" alt=""> ADDRESS BOOK
+                    </a>
+                    <div class=" gap-4 ">
+                        <div class="d-flex align-items-center gap-1 nav-butns btn rounded-3">
+                            <!-- Toggle button for collapse -->
+                            <button class="navbar-toggler py-2 " type="button" data-bs-toggle="collapse" data-bs-target="##navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="rotate()">
+                                <img width="30" height="30" src="#session.userDP#" alt="Toggle Logout" class="rounded-circle">
+                                <img width="20" height="20" src="../images/dropdown.png" alt="Toggle Logout" class="dropdown-image">
+                            </button>
+                        </div>
+                        <!-- Collapse content-->
+                        <div class="collapse collapse-container rounded-bottom" id="navbarCollapse">
+                            <a href="##" id="logout" class="text-decoration-none py-2 log-butn btn ms-3"> Logout</a>
                         </div>
                     </div>
                 </div>
             </nav>
-            <div class="col-10 mt-5 mx-auto">
+            <div class="col-10 mt-5 mx-auto list-view-contents">
 
                 <div class="col-12 bg-light px-3 p-2 text-center">
                     <div class="d-flex justify-content-end gap-2">
@@ -104,8 +109,8 @@
                                                         data-bs-toggle="modal" data-bs-target="##exampleModal">Edit</button>
                                                 </td>
                                                 <td class="align-content-center">
-                                                    <button class="btn address-btn rounded-pill Address"
-                                                        data-bs-toggle="modal" data-bs-target="##deleteModal" title="Delete this contact"
+                                                    <button class="btn address-btn rounded-pill deleteButton" id=""
+                                                        data-bs-toggle="modal" title="Delete this contact"
                                                         data-id="#address.getaddressId()#">Delete</button>
                                                 </td>
                                                 <td class="align-content-center">
@@ -224,7 +229,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="closeModal" class="btn btn-secondary closeModal">Close</button>
+                            <button type="button" id="closeModal" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
                             <button type="button" id="addAddress" class="btn btn-primary"
                                 onclick="modalValidate(event)">Add contact</button>
                             <button type="button" id="editContact" class="btn btn-primary">Edit contact</button>
@@ -288,8 +293,6 @@
                 </div>
             </div>
 
-
-
             <!--- Upload Excel MODAL--->
             <div class="modal fade" id="uploadModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -297,7 +300,7 @@
                       <div class="modal-content">
                          <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Upload Address</h5>
-                            <button type="button" class="btn-close closeModal" data-bs-="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                          </div>
                          <div class="modal-body text-center">
                             <div class="button-boxes float-end mb-3">
@@ -309,7 +312,7 @@
                             <p id="excelUploadResult" class="text-center m-0"></p>
                          </div>
                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary closeModal" data-bs-="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary" id="uploadAddress">Upload Excel</button>
                          </div>
                       </div>
