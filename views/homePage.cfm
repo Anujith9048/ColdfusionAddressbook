@@ -228,13 +228,9 @@
                                             </td>
                                             <td>
                                                 <label for="" class="form-text fw-bold color-address">Roles*</label>
-                                                    <select id="roles" class="mul-select rolesSelect" multiple="true">
-                                                        <option id="sports" value="Manager">Manager</option>
-                                                        <option id="videogames" value="Driver">Driver</option>
-                                                        <option id="painting" value="Cleaner">Cleaner</option>
-                                                        <option id="drawing" value="Admin">Admin</option>
-                                                        <option id="reading" value="Supervisor">Supervisor</option>
-                                                    </select>
+                                                    <div id="selectionArea">
+                                                        <!-- select roles -->
+                                                    </div>
                                                 <p id="errorRole" class="text-danger"></p>
                                             </td>
                                         </tr>

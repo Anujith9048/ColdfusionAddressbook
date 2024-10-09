@@ -1,5 +1,29 @@
 $(document).ready(function(){
 
+    // Function call for Roles
+    $.ajax({
+        url: '../components/controller.cfc?method=selectRoles',
+        method: 'post',
+        dataType: "json",
+        processData: false,
+        contentType: false,
+        success: function (response) {
+                let selectRole = '<select id="roles" class="mul-select rolesSelect" multiple="true">'
+            for(roles of response.DATA){
+                selectRole +=`<option id="sports" value="${roles[0]}">${roles[1]}</option>`;
+            }
+            selectRole +='</select>';
+            $("#selectionArea").html(selectRole);
+
+            $("select2-container").addClass("form-control");
+            $(".mul-select").select2({
+                placeholder: "Roles",
+                tags: true,
+            });
+        }
+    });
+
+
 //SIGNUP//
 $("#register").click(function(event){
     event.preventDefault();
@@ -109,7 +133,7 @@ $("#register").click(function(event){
         $(".editAddress").click(function(){
             event.preventDefault();
             $.ajax({
-                url: '../components/controller.cfc?method=selectedAddress',
+                url: '../components/controller.cfc?method=selectedAddressEdit',
                 method: 'post',
                 data: {
                     id:$(this).attr("data-id")
@@ -260,7 +284,7 @@ $(".closeDelete").click(function(){
             event.preventDefault();
             var button = $(this);
             $.ajax({
-                url: '../components/controller.cfc?method=selectedAddress',
+                url: '../components/controller.cfc?method=selectedAddressView',
                 method: 'post',
                 data: {
                     id: button.attr("data-id"),
@@ -393,10 +417,13 @@ $("#uploadAddress").click(function(event){
         contentType: false,
         dataType: "json",
         success: function (response) {
+            console.log(response);
+            
             if(response.result){
                 console.log(response);
                 $("#excelUploadResult").addClass("text-success");
-                $("#excelUploadResult").text(`${response.add} contact added and ${response.edit} contact edited`);
+                $("#excelUploadResult").text("Address uploaded successfully");
+                // $("#excelUploadResult").text(`${response.add} contact added and ${response.edit} contact edited`);$("#excelUploadResult").text(`${response.add} contact added and ${response.edit} contact edited`);
                 window.location.href="homePage.cfm";
             }
         },
@@ -406,11 +433,4 @@ $("#uploadAddress").click(function(event){
     });
 });
 
-
-
-$("select2-container").addClass("form-control");
-$(".mul-select").select2({
-    placeholder: "roles",
-    tags: true,
-});
 });

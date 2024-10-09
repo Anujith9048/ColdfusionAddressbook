@@ -28,11 +28,25 @@
                         <cfset local.roleList="">
                             
                         <cfloop array="#savedAddresses#" index="address">
-                            <cfset local.condition={addressId=address.getaddressId()}>
-                            <cfset local.role=EntityLoad("roleList",local.condition)>
-                            <cfloop array="#local.role#" index="roles">
-                                <cfset local.roleList = listAppend(local.roleList, roles.getrole(), "  ")>
+                            <cfquery name="selectAddress" datasource="myDatabase">
+                                SELECT * FROM savedAddress
+                                WHERE addressId = <cfqueryparam value="#address.getaddressId()#" cfsqltype="cf_sql_integer">
+                            </cfquery>
+                            
+                            <cfquery name="savedRole" datasource="myDatabase">
+                                SELECT roleName 
+                                FROM rolesList
+                                INNER JOIN userRoles ON userRoles.roleId = rolesList.roleId
+                                WHERE userRoles.addressId = #address.getaddressId()#;
+                            </cfquery>
+                            
+                            <cfset local.roleArray = []>
+                            <cfloop query="savedRole" >
+                                <cfset arrayAppend(local.roleArray, "#roleName#")>
                             </cfloop>
+                            <cfset local.roleList = arrayToList(local.roleArray)>
+                            
+
                             
                             <tr class="mt-2 mt-2">
                                 <td class="align-content-center">
