@@ -110,7 +110,7 @@
                                                 <td class="align-content-center">
                                                     <button class="btn address-btn rounded-pill editAddress"
                                                         id="editAddress" data-id="#address.getaddressId()#" title="Edit this contact"
-                                                        data-bs-toggle="modal" data-bs-target="##exampleModal">Edit</button>
+                                                        data-bs-toggle="modal">Edit</button>
                                                 </td>
                                                 <td class="align-content-center">
                                                     <button class="btn address-btn rounded-pill deleteButton"
@@ -240,7 +240,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="closeModal" class="btn btn-secondary "data-bs-dismiss="modal">Close</button>
+                            <button type="button" id="closeModalAdd" class="btn btn-secondary ">Close</button>
                             <button type="button" id="addAddress" class="btn btn-primary"
                                 onclick="modalValidate(event)">Add Contact</button>
                             <button type="button" id="editContact" class="btn btn-primary">Save Contact</button>

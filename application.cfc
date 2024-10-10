@@ -15,7 +15,6 @@
     <cffunction name="onSessionStart" returntype="void">
         <cfset session.isLog = false>
         <cfset session.username ="">
-        <cfset session.selectId ="">
         <cfset session.userDP ="">
         <cfset session.userId ="">
     </cffunction>

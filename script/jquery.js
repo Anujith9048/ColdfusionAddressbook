@@ -8,6 +8,7 @@ $(document).ready(function(){
         processData: false,
         contentType: false,
         success: function (response) {
+            
                 let selectRole = '<select id="roles" class="mul-select rolesSelect" multiple="true">'
             for(roles of response.DATA){
                 selectRole +=`<option id="sports" value="${roles[0]}">${roles[1]}</option>`;
@@ -122,36 +123,35 @@ $("#register").click(function(event){
         });
     });
 
-    $("#createContact").click(function(event) { 
-        event.preventDefault();
-        $("#editContact").hide(); 
-        $("#addAddress").show();  
-        $("#exampleModal").modal('show');  
-    });
     
 //EDIT ADDRESS MODAL VIEW//
         $(".editAddress").click(function(){
             event.preventDefault();
+            var id=$(this).attr("data-id");
+
             $.ajax({
                 url: '../components/controller.cfc?method=selectedAddressEdit',
                 method: 'post',
                 data: {
-                    id:$(this).attr("data-id")
+                    id: id
                 },
                 dataType: "json",
                 success: function (response) {
+                    console.log(response);
 
                     var rowData = response.address.DATA[0];
-                    
-                    $("#addAddress").hide();
-                    $("#editContact").show();
-                    $("#modalSideImage").hide();
-                    $("#upload-box").hide();
 
                     $("#exampleModalLabel").text("Edit Contact");
                     $("#addAddress").text("Edit Contact");
                     $("#image-title").text("Change Image");
                     
+                    $("#exampleModal").modal('show');
+                    $("#addAddress").hide();
+                    $("#editContact").show();
+                    $("#editContact").attr("data-id", `${id}`);
+                    $("#modalSideImage").hide();
+                    $("#upload-box").hide();
+
                     $("#title").val(rowData[1]);
                     $("#gender").val(rowData[4]);
                     $("#fname").attr("value", `${rowData[2]}`);
@@ -168,6 +168,8 @@ $("#register").click(function(event){
                 },
                 error: function (xhr, status, error) {
                     console.log("An error occurred : " + error);
+                    console.log("status : " + status);
+                    console.log("xhr : " + xhr);
                 }
             });
         });
@@ -175,6 +177,7 @@ $("#register").click(function(event){
         $("#editContact").click(function(){
             event.preventDefault();       
                 var isValid = modalValidate();
+                
 
                 if (isValid) {
                     event.preventDefault();
@@ -198,6 +201,7 @@ $("#register").click(function(event){
                     editData.append("email", $("#email").val());
                     editData.append("pincode", $("#pincode").val());
                     editData.append("roles", $("#roles").val());
+                    editData.append("id", $(this).attr("data-id"));
     
                     $.ajax({
                         url: '../components/controller.cfc',
@@ -339,6 +343,15 @@ $(".closeDelete").click(function(){
 
 
 //ADD ADDRESS//
+
+$("#createContact").click(function(event) { 
+    event.preventDefault();
+    $("#exampleModalLabel").text("Create Contact");
+    $("#exampleModal").modal('show');
+    $("#editContact").hide(); 
+    $("#addAddress").show();
+});
+
 $("#addAddress").click(function(event){
     event.preventDefault();
     $("#exampleModalLabel").text("Create Contact");
@@ -432,5 +445,7 @@ $("#uploadAddress").click(function(event){
         }
     });
 });
-
+$("#closeModalAdd").click(function (){
+    window.location.href="homePage.cfm";
+})
 });
